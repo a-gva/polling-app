@@ -7,6 +7,7 @@ export default function WelcomeScreen() {
         all time? Cast your vote and let your voice be heard in this legendary
         battle of musical titans.
       </p>
+      <h2 className='font-bold'>How it works</h2>
       <ul>
         <li>Vote for your favorite Beatle</li>
         <li>See the results in real-time</li>
