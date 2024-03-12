@@ -1,12 +1,29 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 type NameInput = {
   name: string;
   email: string;
 };
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, {
+      message: 'Name must be at least 2 characters long',
+    })
+    .max(96, {
+      message: 'Name must be at most 96 characters long',
+    }),
+  email: z
+    .string()
+    .email('Invalid email address')
+    .transform((email) => email.trim().toLowerCase()),
+});
 
 export default function Login() {
   const {
@@ -14,7 +31,9 @@ export default function Login() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<NameInput>();
+  } = useForm<NameInput>({
+    resolver: zodResolver(formSchema),
+  });
   const onSubmit: SubmitHandler<NameInput> = (data) => console.log(data);
 
   return (
@@ -26,14 +45,14 @@ export default function Login() {
           className='border border-slate-300 rounded'
           {...register('name', { required: true })}
         />
-        {errors.name && <span>This field is required</span>}
+        {errors.name && <span>{errors.name.message}</span>}
         <label>Email:</label>
         <input
           placeholder='email'
           className='border border-slate-300 rounded'
           {...register('email', { required: true })}
         />
-        {errors.email && <span>This field is required</span>}
+        {errors.email && <span>{errors.email.message}</span>}
 
         <Button>
           <input type='submit' />
