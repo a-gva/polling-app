@@ -1,7 +1,7 @@
 import { get404 } from './controllers/404';
-import { router as createPoll } from './routes/createPoll';
+import { router as poll } from './routes/poll';
 
 export const routes = [
-  { path: '/createPoll', handler: createPoll },
+  { path: '/poll', handler: poll },
   { path: '/', handler: get404 },
 ];
