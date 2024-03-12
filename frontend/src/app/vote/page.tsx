@@ -1,3 +1,3 @@
 export default function Vote() {
-  return <div>Vote Now</div>;
+  return <div>Vote Now!</div>;
 }

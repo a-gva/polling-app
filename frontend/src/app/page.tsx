@@ -1,6 +1,8 @@
 import Login from '@/components/login';
 import VoteCTA from '@/components/vote-cta';
+import VotingCabin from '@/components/voting-cabin';
 import WelcomeScreen from '@/components/welcome-screen';
+import { beatles } from '@/data/beatles';
 
 export default function Home() {
   return (
@@ -9,6 +11,7 @@ export default function Home() {
         <WelcomeScreen />
         <VoteCTA />
         <Login />
+        <VotingCabin content={beatles} />
       </div>
     </main>
   );

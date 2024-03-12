@@ -18,8 +18,8 @@ export default function Login() {
   const onSubmit: SubmitHandler<NameInput> = (data) => console.log(data);
 
   return (
-    <div className='flex flex-col w-full'>
-      <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+    <div className='flex flex-col w-1/2'>
+      <form className='flex flex-col w-full' onSubmit={handleSubmit(onSubmit)}>
         <label>Name:</label>
         <input
           placeholder='name'
