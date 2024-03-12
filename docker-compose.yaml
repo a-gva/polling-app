@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  postgres:
+    image: '$DB_IMAGE'
+    ports:
+      - '$DB_ACCESS_PORT:$DB_INTERNAL_PORT'
+    environment:
+      POSTGRES_USER: '$DB_USER'
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
