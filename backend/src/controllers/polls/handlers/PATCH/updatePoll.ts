@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { dbPollId, pollSchema } from '../../schema';
+import { pollSchema } from '../../../schema';
 import { getPollById } from '../GET/getPollById';
 
 const prisma = new PrismaClient();
@@ -9,21 +9,13 @@ const prisma = new PrismaClient();
 export async function updatePoll(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const parsedId = Number(id) as z.infer<typeof dbPollId>['id'];
-
-    if (isNaN(parsedId)) {
-      res
-        .status(400)
-        .send(
-          `Invalid Param ID: it should be a number. \n Received instead: "${id}" as ${typeof id}`
-        );
-      return;
-    }
+    const parsedId = id as z.infer<typeof pollSchema>['id'];
 
     const { name, question, options } = req.body;
     const parsedName = name as z.infer<typeof pollSchema>['name'];
     const parsedQuestion = question as z.infer<typeof pollSchema>['question'];
     const parsedOptions = options as z.infer<typeof pollSchema>['options'];
+    const parsedOptionsLength = parsedOptions.length;
 
     const updatedPoll = await prisma.poll.update({
       where: {
@@ -33,6 +25,7 @@ export async function updatePoll(req: Request, res: Response) {
         name: parsedName,
         question: parsedQuestion,
         options: parsedOptions,
+        options_length: parsedOptionsLength,
       },
     });
 

@@ -21,21 +21,22 @@ model User {
 }
 
 model Poll {
-  id          Int @id @default(autoincrement())
+  id          String @id
   name        String
   question    String
   options     Json
   votes       Int[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-  pollVotes   PollVotes[] // Relation field
+  pollVotes   PollVotes[] 
+  options_length Int @default(0)
 }
 
 model PollVotes {
   id          String   @id @default(uuid())
-  pollId      Int
+  pollId      String
   poll        Poll     @relation(fields: [pollId], references: [id]) // Relation field
-  option      Int
+  vote        Int
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }

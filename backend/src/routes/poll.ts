@@ -1,10 +1,11 @@
 import express from 'express';
-import { pollControllers } from '../controllers/polls';
+import { deletePoll } from '../controllers/polls/handlers/DELETE/deletePoll';
+import { getAllPolls } from '../controllers/polls/handlers/GET/getAllPolls';
+import { getPollById } from '../controllers/polls/handlers/GET/getPollById';
+import { updatePoll } from '../controllers/polls/handlers/PATCH/updatePoll';
+import { createPoll } from '../controllers/polls/handlers/POST/createPoll';
 
 export const router = express.Router();
-
-const { createPoll, deletePoll, getAllPolls, getPollById, updatePoll } =
-  pollControllers;
 
 router.post('/', createPoll);
 router.delete('/:id', deletePoll);

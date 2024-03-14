@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { z } from 'zod';
-import { dbPollId } from '../../schema';
+import { pollSchema } from '../../../schema';
 
 const prisma = new PrismaClient();
 const myCache = new NodeCache();
@@ -10,16 +10,7 @@ const myCache = new NodeCache();
 export async function getPollById(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const parsedId = Number(id) as z.infer<typeof dbPollId>['id'];
-
-    if (isNaN(parsedId)) {
-      res
-        .status(400)
-        .send(
-          `Invalid Param ID: it should be a number. \n Received instead: "${id}" as ${typeof id}`
-        );
-      return;
-    }
+    const parsedId = id as z.infer<typeof pollSchema>['id'];
 
     let poll = myCache.get(`poll_${parsedId}`);
 
