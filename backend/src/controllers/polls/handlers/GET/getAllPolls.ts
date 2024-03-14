@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import cache from '../../../cache';
+import cache from '../../../../cache';
 
 const prisma = new PrismaClient();
 

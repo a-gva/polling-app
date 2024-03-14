@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import cache from '../../../cache';
+import cache from '../../../../cache';
 import { pollSchema } from '../../../schema';
 
 const prisma = new PrismaClient();

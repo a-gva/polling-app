@@ -1,8 +1,9 @@
+import axios from 'axios';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
-
+import cache from './cache';
 import { routes } from './slugs';
 import { rootDir } from './utils/path';
 
@@ -22,4 +23,17 @@ routes.forEach((route) => {
   app.use(route.path, route.handler);
 });
 
-app.listen(`${port}`);
+export let allPollsCached = [];
+
+app.listen(port, async () => {
+  console.log(`Server running on port ${port}`);
+
+  try {
+    const response = await axios.get('http://localhost:' + port + '/poll');
+    allPollsCached = response.data;
+    cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
+    console.log('Polls fetched and stored in cache');
+  } catch (error) {
+    console.error('Failed to fetch polls:', error);
+  }
+});
