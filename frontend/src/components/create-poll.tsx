@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 type NewPollFormInput = {
-  name: string;
   question: string;
   mandatoryOptions: string[];
   nullableOptions?: string[];
@@ -51,14 +50,10 @@ export default function CreatePoll() {
   }, []);
 
   const newPollSchema = z.object({
-    name: z
-      .string()
-      .min(2, { message: 'Name: minimum 2 characters ' })
-      .max(64, { message: 'Name: maximum 64 characters ' }),
     question: z
       .string()
-      .min(2, { message: 'Question: minimum 2 characters ' })
-      .max(96, { message: 'Question: maximum 96 characters' }),
+      .min(2, { message: 'Minimum 2 characters ' })
+      .max(96, { message: 'Maximum 96 characters' }),
     nullableOptions: z
       .array(
         z
@@ -84,8 +79,8 @@ export default function CreatePoll() {
       .array(
         z
           .string()
-          .min(2, { message: 'Option: minimum 2 characters' })
-          .max(32, { message: 'Option: maximum 32 characters' })
+          .min(2, { message: 'Minimum 2 characters' })
+          .max(32, { message: 'Maximum 32 characters' })
       )
       .nonempty(),
   });
@@ -99,7 +94,6 @@ export default function CreatePoll() {
   });
   const onSubmit: SubmitHandler<NewPollFormInput> = (data) => {
     const payload = {
-      name: data.name,
       question: data.question,
       options: [...data.mandatoryOptions, ...(data.nullableOptions || [])],
     };
@@ -107,69 +101,77 @@ export default function CreatePoll() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-row gap-6'>
-      <div className='flex flex-col'>
-        <label>Name</label>
-        <input
-          {...register('name', { required: true })}
-          className='border border-slate-300 rounded'
-        />
-        {errors.name && <ErrorMessage>{`${errors.name.message}`}</ErrorMessage>}
-        <label>Question</label>
-        <input
-          {...register('question', { required: true })}
-          className='border border-slate-300 rounded'
-        />
-        {errors.question && (
-          <ErrorMessage>{`${errors.question.message}`}</ErrorMessage>
-        )}
-      </div>
-      <div className='flex flex-col'>
-        <label>Option 1</label>
-        <input
-          {...register(`mandatoryOptions.${0}`, { required: true })}
-          className='border border-slate-300 rounded'
-        />
-        {errors.mandatoryOptions && errors.mandatoryOptions[0] && (
-          <ErrorMessage>{`${errors.mandatoryOptions[0].message}`}</ErrorMessage>
-        )}
-        <label>Option 2</label>
-        <input
-          {...register(`mandatoryOptions.${1}`, { required: true })}
-          className='border border-slate-300 rounded'
-        />
-        {errors.mandatoryOptions && errors.mandatoryOptions[1] && (
-          <ErrorMessage>{`${errors.mandatoryOptions[1].message}`}</ErrorMessage>
-        )}{' '}
-      </div>
-      <div className='flex flex-col'>
-        <label>Option 3</label>
-        <input
-          {...register(`nullableOptions.${0}`)}
-          className='border border-slate-300 rounded'
-        />
-        {errors.nullableOptions && errors.nullableOptions[0] && (
-          <ErrorMessage>{`${errors.nullableOptions[0].message}`}</ErrorMessage>
-        )}
-        <label>Option 4</label>
-        <input
-          {...register(`nullableOptions.${1}`)}
-          className='border border-slate-300 rounded'
-        />
-        {errors.nullableOptions && errors.nullableOptions[1] && (
-          <ErrorMessage>{`${errors.nullableOptions[1].message}`}</ErrorMessage>
-        )}{' '}
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-2/3'>
+      <div className='flex flex-row w-full '>
+        <div className='flex flex-col w-5/6 '>
+          <label>Question</label>
+          <textarea
+            {...register('question', { required: true })}
+            className='border border-slate-300 rounded'
+          />
+        </div>
 
-      <div className='flex flex-col items-center justify-center'>
-        <Button>
-          <input type='submit' />
-        </Button>
+        <div className='flex items-end justify-end  w-1/6'>
+          <Button onClick={handleSubmit(onSubmit)}>
+            <input type='submit' />
+          </Button>
+        </div>
+      </div>
+      {errors.question && (
+        <ErrorMessage>{`${errors.question.message}`}</ErrorMessage>
+      )}
+      <div className='flex flex-row w-full mt-4 gap-4'>
+        <div className='flex flex-col w-full gap-2'>
+          <div className='flex flex-col'>
+            <label>Option 1</label>
+            <input
+              {...register(`mandatoryOptions.${0}`, { required: true })}
+              className='border border-slate-300 rounded h-8'
+            />
+            {errors.mandatoryOptions && errors.mandatoryOptions[0] && (
+              <ErrorMessage>{`${errors.mandatoryOptions[0].message}`}</ErrorMessage>
+            )}
+          </div>
+          <div className='flex flex-col'>
+            <label>Option 2</label>
+            <input
+              {...register(`mandatoryOptions.${1}`, { required: true })}
+              className='border border-slate-300 rounded h-8'
+            />
+            {errors.mandatoryOptions && errors.mandatoryOptions[1] && (
+              <ErrorMessage>{`${errors.mandatoryOptions[1].message}`}</ErrorMessage>
+            )}{' '}
+          </div>
+        </div>
+        <div className='flex flex-col w-full gap-2'>
+          <div className='flex flex-col'>
+            <label>Option 3 </label>
+            <input
+              {...register(`nullableOptions.${0}`)}
+              className='border border-slate-300 rounded h-8'
+              placeholder='Optional'
+            />
+            {errors.nullableOptions && errors.nullableOptions[0] && (
+              <ErrorMessage>{`${errors.nullableOptions[0].message}`}</ErrorMessage>
+            )}
+          </div>
+          <div className='flex flex-col'>
+            <label>Option 4</label>
+            <input
+              {...register(`nullableOptions.${1}`)}
+              className='border border-slate-300 rounded h-8'
+              placeholder='Optional'
+            />
+            {errors.nullableOptions && errors.nullableOptions[1] && (
+              <ErrorMessage>{`${errors.nullableOptions[1].message}`}</ErrorMessage>
+            )}{' '}
+          </div>
+        </div>
       </div>
     </form>
   );
 }
 
 function ErrorMessage({ children }: { children?: React.ReactNode }) {
-  return <span className='text-red-600 font-bold text-xs'>{children}</span>;
+  return <span className='text-red-600 text-xs'>{children}</span>;
 }
