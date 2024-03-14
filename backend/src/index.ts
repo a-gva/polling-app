@@ -34,11 +34,16 @@ routes.forEach((route) => {
 export let allPollsCached = [];
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  console.log('A user connected: ' + socket.id);
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('A user disconnected: ' + socket.id);
   });
+});
+
+io.on('message', (message) => {
+  // Send a message to all connected clients
+  io.emit('Propagando messagem:', JSON.stringify(message));
 });
 
 server.listen(port, async () => {
