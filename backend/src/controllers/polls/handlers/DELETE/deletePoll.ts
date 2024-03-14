@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import prisma from '../../../../prisma';
 import { pollSchema } from '../../../schema';
 import { getAllPolls } from '../GET/getAllPolls';
-
-const prisma = new PrismaClient();
 
 export async function deletePoll(req: Request, res: Response) {
   const { id } = req.params;

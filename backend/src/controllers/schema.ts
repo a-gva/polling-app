@@ -11,3 +11,7 @@ export const voteSchema = z.object({
   voteId: z.string(),
   vote: z.number(),
 });
+
+export const populateSchema = z.object({
+  quantity: z.number(),
+});

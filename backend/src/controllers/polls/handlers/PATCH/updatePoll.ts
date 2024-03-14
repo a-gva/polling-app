@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import prisma from '../../../../prisma';
 import { pollSchema } from '../../../schema';
 import { getPollById } from '../GET/getPollById';
-
-const prisma = new PrismaClient();
 
 export async function updatePoll(req: Request, res: Response) {
   try {

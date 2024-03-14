@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import cache from '../../../../cache';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../prisma';
 
 export async function getAllPolls(req: Request, res: Response) {
   try {
