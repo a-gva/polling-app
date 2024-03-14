@@ -2,13 +2,13 @@ import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import cache from '../../../cache';
 import { pollSchema } from '../../../schema';
 
 const prisma = new PrismaClient();
 
 export async function createPoll(req: Request, res: Response) {
   try {
-    console.log(req.body);
     const id = randomUUID();
     req.body.id = id;
     const { name, question, options } = pollSchema.parse(req.body);
@@ -20,7 +20,6 @@ export async function createPoll(req: Request, res: Response) {
       id: id as z.infer<typeof pollSchema>['id'],
     };
 
-    console.log('parsedDbPayload', parsedDbPayload);
     const dbPollCreated = await prisma.poll.create({
       data: {
         id: parsedDbPayload.id,
@@ -31,6 +30,11 @@ export async function createPoll(req: Request, res: Response) {
         options_length: parsedDbPayload.options.length,
       },
     });
+
+    if (dbPollCreated) {
+      cache.set(`poll_${id}`, dbPollCreated);
+      const cachedResult = cache.get(`poll_${id}`);
+    }
 
     console.log('🟩 Poll created!');
     res.status(201).send(dbPollCreated); // Send the created poll in the response

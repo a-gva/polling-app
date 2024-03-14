@@ -1,13 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import NodeCache from 'node-cache';
+import cache from '../../../cache';
 
 const prisma = new PrismaClient();
-const myCache = new NodeCache();
 
 export async function getAllPolls(req: Request, res: Response) {
   try {
-    let allPolls = myCache.get('allPolls');
+    let allPolls = cache.get('allPolls');
 
     if (!allPolls) {
       console.log('Fetching all polls from DB...');
@@ -18,7 +17,7 @@ export async function getAllPolls(req: Request, res: Response) {
               id: 'asc',
             },
           });
-          myCache.set('allPolls', polls, process.env.CACHE_TIMEOUT);
+          cache.set('allPolls', polls, process.env.CACHE_TIMEOUT);
           resolve(polls);
         }, 1000)
       );

@@ -1,18 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import NodeCache from 'node-cache';
 import { z } from 'zod';
+import cache from '../../../cache';
 import { pollSchema } from '../../../schema';
 
 const prisma = new PrismaClient();
-const myCache = new NodeCache();
 
 export async function getPollById(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const parsedId = id as z.infer<typeof pollSchema>['id'];
 
-    let poll = myCache.get(`poll_${parsedId}`);
+    let poll = cache.get(`poll_${parsedId}`);
 
     if (!poll) {
       console.log(`🔴 Poll "${parsedId}" not found in cache...`);
@@ -30,11 +29,7 @@ export async function getPollById(req: Request, res: Response) {
       );
 
       if (poll) {
-        myCache.set(
-          `poll_${parsedId}`,
-          poll,
-          Number(process.env.CACHE_TIMEOUT)
-        );
+        cache.set(`poll_${parsedId}`, poll, Number(process.env.CACHE_TIMEOUT));
         console.log(
           `🟢 Poll "${parsedId}" fetched from DB and stored in cache!`
         );
