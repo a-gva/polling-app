@@ -33,6 +33,7 @@ app.listen(port, async () => {
     allPollsCached = response.data;
     cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
     console.log('Polls fetched and stored in cache');
+    console.log(cache.get('allPolls'));
   } catch (error) {
     console.error('Failed to fetch polls:', error);
   }

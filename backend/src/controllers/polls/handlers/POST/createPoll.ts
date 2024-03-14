@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import { allPollsCached } from '../../../..';
 import cache from '../../../../cache';
 import prisma from '../../../../prisma';
 import { pollSchema } from '../../../schema';
@@ -30,8 +31,9 @@ export async function createPoll(req: Request, res: Response) {
     });
 
     if (dbPollCreated) {
-      cache.set(`poll_${id}`, dbPollCreated);
-      const cachedResult = cache.get(`poll_${id}`);
+      const allPolls = [...allPollsCached, dbPollCreated];
+      cache.set('allPolls', allPolls, Number(process.env.CACHE_TIMEOUT));
+      console.log(cache.get('allPolls'));
     }
 
     console.log('🟩 Poll created!');
