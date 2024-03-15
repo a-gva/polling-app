@@ -12,6 +12,30 @@ export const pollsSwagger = {
     post: {
       tags: ['/polls'],
       summary: 'Creates a new poll',
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string',
+                },
+                question: {
+                  type: 'string',
+                },
+                options: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  minItems: 2,
+                },
+              },
+              required: ['name', 'options'],
+            },
+          },
+        },
+      },
       responses: {
         201: {
           description: 'The created poll',
@@ -19,9 +43,9 @@ export const pollsSwagger = {
       },
     },
   },
-  '/polls/{id}': {
+  '/poll/{id}': {
     get: {
-      tags: ['/polls/{id}'],
+      tags: ['/poll/{id}'],
       summary: 'Returns a specific poll',
       parameters: [
         {
@@ -29,7 +53,7 @@ export const pollsSwagger = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'string',
           },
         },
       ],
@@ -40,7 +64,7 @@ export const pollsSwagger = {
       },
     },
     delete: {
-      tags: ['/polls/{id}'],
+      tags: ['/poll/{id}'],
       summary: 'Deletes a poll',
       parameters: [
         {
@@ -48,7 +72,7 @@ export const pollsSwagger = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'string',
           },
         },
       ],
@@ -59,7 +83,7 @@ export const pollsSwagger = {
       },
     },
     patch: {
-      tags: ['/polls/{id}'],
+      tags: ['/poll/{id}'],
       summary: 'Updates a specific poll',
       parameters: [
         {
@@ -67,10 +91,34 @@ export const pollsSwagger = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer',
+            type: 'string',
           },
         },
       ],
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string',
+                },
+                question: {
+                  type: 'string',
+                },
+                options: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  minItems: 2,
+                },
+              },
+              required: ['name', 'options'],
+            },
+          },
+        },
+      },
       responses: {
         200: {
           description: 'The updated poll',
