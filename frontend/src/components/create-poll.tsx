@@ -31,14 +31,20 @@ export default function CreatePoll() {
       setFooEvents((previous) => [...previous, value]);
     }
 
+    function onMessageEvent(message: any) {
+      console.log('New message received:', message);
+    }
+
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('foo', onFooEvent);
+    socket.on('message', onMessageEvent);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('foo', onFooEvent);
+      socket.off('message', onMessageEvent);
     };
   }, []);
   useEffect(() => {
@@ -93,11 +99,23 @@ export default function CreatePoll() {
     resolver: zodResolver(newPollSchema),
   });
   const onSubmit: SubmitHandler<NewPollFormInput> = (data) => {
+    let options = [...data.mandatoryOptions];
+
+    if (data.nullableOptions) {
+      data.nullableOptions.map((option) => {
+        if (!option) {
+          return;
+        }
+        options.push(option);
+      });
+    }
+
     const payload = {
       question: data.question,
-      options: [...data.mandatoryOptions, ...(data.nullableOptions || [])],
+      options: options,
     };
     console.log(payload);
+    socket.emit('message', payload);
   };
 
   return (
@@ -112,7 +130,7 @@ export default function CreatePoll() {
         </div>
 
         <div className='flex items-end justify-end  w-1/6'>
-          <Button onClick={handleSubmit(onSubmit)}>
+          <Button>
             <input type='submit' />
           </Button>
         </div>
