@@ -47,11 +47,12 @@ export default function CreatePoll() {
       socket.off('message', onMessageEvent);
     };
   }, []);
+
   useEffect(() => {
     let userId = localStorage.getItem('userId');
     if (!userId) {
-      userId = uuidv4();
-      localStorage.setItem('userId', userId);
+      const newUserId = uuidv4();
+      localStorage.setItem('userId', newUserId);
     }
   }, []);
 
