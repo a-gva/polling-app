@@ -100,6 +100,10 @@ export default function CreatePoll() {
     resolver: zodResolver(newPollSchema),
   });
   const onSubmit: SubmitHandler<NewPollFormInput> = (data) => {
+    if (!isConnected) {
+      return;
+    }
+
     let options = [...data.mandatoryOptions];
 
     if (data.nullableOptions) {
