@@ -22,7 +22,6 @@ model User {
 
 model Poll {
   id          String @id
-  name        String
   question    String
   options     Json
   votes       Int[]

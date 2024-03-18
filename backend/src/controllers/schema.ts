@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 export const pollSchema = z.object({
   id: z.string(),
-  name: z.string(),
   question: z.string(),
   options: z.array(z.string()),
 });

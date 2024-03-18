@@ -1,7 +1,7 @@
 export const pollsSwagger = {
   '/poll': {
     get: {
-      tags: ['/polls'],
+      tags: ['/poll'],
       summary: 'Returns the list of all the polls',
       responses: {
         200: {
@@ -10,7 +10,7 @@ export const pollsSwagger = {
       },
     },
     post: {
-      tags: ['/polls'],
+      tags: ['/poll'],
       summary: 'Creates a new poll',
       requestBody: {
         required: true,
@@ -102,9 +102,6 @@ export const pollsSwagger = {
             schema: {
               type: 'object',
               properties: {
-                name: {
-                  type: 'string',
-                },
                 question: {
                   type: 'string',
                 },
@@ -114,7 +111,7 @@ export const pollsSwagger = {
                   minItems: 2,
                 },
               },
-              required: ['name', 'options'],
+              required: ['question', 'options'],
             },
           },
         },

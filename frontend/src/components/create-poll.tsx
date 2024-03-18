@@ -16,34 +16,34 @@ type NewPollFormInput = {
 
 export default function CreatePoll() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState<string[]>([]);
+  const [messageEvents, setMessageEvents] = useState<string[]>([]);
 
   useEffect(() => {
-    function onConnect() {
+    const onConnect = () => {
       setIsConnected(true);
-    }
+    };
 
     function onDisconnect() {
       setIsConnected(false);
+      console.log('A user disconnected');
     }
 
-    function onFooEvent(value: string) {
-      setFooEvents((previous) => [...previous, value]);
-    }
-
-    function onMessageEvent(message: any) {
-      console.log('New message received:', message);
+    function onMessageEvent(value: string) {
+      console.log('value:', value);
+      setMessageEvents((previous) => [...previous, value]);
     }
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('foo', onFooEvent);
-    socket.on('message', onMessageEvent);
+    socket.on('message', (message) => {
+      const parsedMessage = JSON.parse(message);
+      console.log('CLIENT - Message:', parsedMessage);
+      console.log('CLIENT - Sender:', socket.id);
+    });
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('foo', onFooEvent);
       socket.off('message', onMessageEvent);
     };
   }, []);
@@ -55,6 +55,10 @@ export default function CreatePoll() {
       localStorage.setItem('userId', newUserId);
     }
   }, []);
+
+  useEffect(() => {
+    console.log('messageEvents:', messageEvents);
+  }, [messageEvents]);
 
   const newPollSchema = z.object({
     question: z
@@ -99,11 +103,8 @@ export default function CreatePoll() {
   } = useForm<NewPollFormInput>({
     resolver: zodResolver(newPollSchema),
   });
-  const onSubmit: SubmitHandler<NewPollFormInput> = (data) => {
-    if (!isConnected) {
-      return;
-    }
-
+  const onSubmit: SubmitHandler<NewPollFormInput> = async (data) => {
+    console.log('data:', data);
     let options = [...data.mandatoryOptions];
 
     if (data.nullableOptions) {
@@ -115,12 +116,31 @@ export default function CreatePoll() {
       });
     }
 
-    const payload = {
+    console.log('options:', options);
+
+    const parsedPayload = {
       question: data.question,
       options: options,
     };
-    console.log(payload);
-    socket.emit('message', payload);
+
+    console.log('parsedPayload:', parsedPayload);
+
+    const response = await fetch('http://localhost:3000/poll', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(parsedPayload),
+    });
+
+    if (!response.ok) {
+      // Handle error
+      console.error('Alexy Error:', response.status, response.statusText);
+      return;
+    }
+
+    const responseData = await response.json();
+    console.log('Response data:', responseData);
   };
 
   return (

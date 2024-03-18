@@ -10,10 +10,9 @@ export async function createPoll(req: Request, res: Response) {
   try {
     const id = randomUUID();
     req.body.id = id;
-    const { name, question, options } = pollSchema.parse(req.body);
+    const { question, options } = pollSchema.parse(req.body);
 
     const parsedDbPayload = {
-      name: name as z.infer<typeof pollSchema>['name'],
       question: question as z.infer<typeof pollSchema>['question'],
       options: options as z.infer<typeof pollSchema>['options'],
       id: id as z.infer<typeof pollSchema>['id'],
@@ -22,7 +21,6 @@ export async function createPoll(req: Request, res: Response) {
     const dbPollCreated = await prisma.poll.create({
       data: {
         id: parsedDbPayload.id,
-        name: parsedDbPayload.name,
         question: parsedDbPayload.question,
         options: parsedDbPayload.options,
         created_at: new Date(),

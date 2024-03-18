@@ -6,6 +6,7 @@ import { createServer } from 'http';
 import path from 'path';
 import { Server as Io } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
+import { z } from 'zod';
 import cache from './cache';
 import { routes } from './slugs';
 import { swaggerDocs } from './swagger/swagger-config';
@@ -23,11 +24,13 @@ const io = new Io(server, {
 });
 
 app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+const messageSchema = z.string();
+const messageId = z.string();
 
 // BOOK INDEX
 routes.forEach((route) => {
@@ -42,10 +45,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('A user disconnected: ' + socket.id);
   });
+
   socket.on('message', (message) => {
-    console.log('Messagem recebida:' + JSON.stringify(message));
-    console.log('Enviada por:' + JSON.stringify(socket.id));
-    socket.broadcast.emit('message', JSON.stringify(message));
+    const parsedMessage = messageSchema.parse(message.body);
+    const parsedMessageId = messageSchema.parse(socket.id);
+    const output = {
+      message: parsedMessage,
+      sender: parsedMessageId,
+    };
+    console.log(output);
+    socket.broadcast.emit('message', JSON.stringify(output));
   });
 });
 
