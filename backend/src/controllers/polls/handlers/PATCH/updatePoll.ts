@@ -9,8 +9,7 @@ export async function updatePoll(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = id as z.infer<typeof pollSchema>['id'];
 
-    const { name, question, options } = req.body;
-    const parsedName = name as z.infer<typeof pollSchema>['name'];
+    const { question, options } = req.body;
     const parsedQuestion = question as z.infer<typeof pollSchema>['question'];
     const parsedOptions = options as z.infer<typeof pollSchema>['options'];
     const parsedOptionsLength = parsedOptions.length;
@@ -20,7 +19,6 @@ export async function updatePoll(req: Request, res: Response) {
         id: parsedId,
       },
       data: {
-        name: parsedName,
         question: parsedQuestion,
         options: parsedOptions,
         options_length: parsedOptionsLength,

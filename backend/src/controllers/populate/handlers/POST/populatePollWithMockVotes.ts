@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { allPollsCached } from '../../../..';
+import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
 import { pollSchema, populateSchema } from '../../../schema';
 
@@ -19,6 +19,7 @@ export async function populatePollWithMockVotes(req: Request, res: Response) {
 
   if (!poll) {
     res.status(404).send('Poll not found');
+    return;
   }
 
   function createVote(pollId: string) {
@@ -43,5 +44,9 @@ export async function populatePollWithMockVotes(req: Request, res: Response) {
     console.log(`${vote.pollId} - ${vote.vote}`);
   });
 
-  res.status(200).send('populatePollWithMockVotes');
+  res
+    .status(200)
+    .send(
+      `- poll id: ${parsedPollId} \n- ${parsedQuantity} new votes registered`
+    );
 }

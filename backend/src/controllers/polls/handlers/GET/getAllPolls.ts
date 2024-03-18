@@ -20,6 +20,7 @@ export async function getAllPolls(req: Request, res: Response) {
         }, 1000)
       );
     }
+    allPolls && console.log('All polls fetched from DB');
     res.status(200).send(allPolls);
   } catch (err) {
     console.error(`🔴 ERROR: ${err.message}`);

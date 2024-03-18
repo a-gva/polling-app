@@ -134,7 +134,6 @@ export default function CreatePoll() {
     });
 
     if (!response.ok) {
-      // Handle error
       console.error('Alexy Error:', response.status, response.statusText);
       return;
     }

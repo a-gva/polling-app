@@ -1,4 +1,3 @@
-import axios from 'axios';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -7,7 +6,7 @@ import path from 'path';
 import { Server as Io } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
-import cache from './cache';
+import { cachePolls } from './cache';
 import { routes } from './slugs';
 import { swaggerDocs } from './swagger/swagger-config';
 import { rootDir } from './utils/path';
@@ -37,8 +36,6 @@ routes.forEach((route) => {
   app.use(route.path, route.handler);
 });
 
-export let allPollsCached = [];
-
 io.on('connection', (socket) => {
   console.log('A user connected: ' + socket.id);
 
@@ -60,14 +57,5 @@ io.on('connection', (socket) => {
 
 server.listen(port, async () => {
   console.log(`Server running on port ${port}`);
-
-  try {
-    const response = await axios.get('http://localhost:' + port + '/poll');
-    allPollsCached = response.data;
-    cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
-    // console.log('Polls fetched and stored in cache');
-    // console.log(cache.get('allPolls'));
-  } catch (error) {
-    console.error('Failed to fetch polls:', error);
-  }
+  cachePolls();
 });

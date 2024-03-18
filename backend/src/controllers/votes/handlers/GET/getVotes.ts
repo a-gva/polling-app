@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { allPollsCached } from '../../../..';
+import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
 import { pollSchema } from '../../../schema';
 

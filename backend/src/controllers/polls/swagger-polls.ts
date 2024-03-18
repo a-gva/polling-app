@@ -19,9 +19,6 @@ export const pollsSwagger = {
             schema: {
               type: 'object',
               properties: {
-                name: {
-                  type: 'string',
-                },
                 question: {
                   type: 'string',
                 },
@@ -31,7 +28,7 @@ export const pollsSwagger = {
                   minItems: 2,
                 },
               },
-              required: ['name', 'options'],
+              required: ['options'],
             },
           },
         },

@@ -1,8 +1,11 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { allPollsCached } from '../../../..';
-import cache from '../../../../cache';
+import cache, {
+  allPollsCached,
+  cachePolls,
+  clearPollsCache,
+} from '../../../../cache';
 import prisma from '../../../../prisma';
 import { pollSchema } from '../../../schema';
 
@@ -35,6 +38,10 @@ export async function createPoll(req: Request, res: Response) {
     }
 
     console.log('🟩 Poll created!');
+    clearPollsCache();
+    console.log('Polls Cache cleared');
+    cachePolls();
+    console.log('Polls Cached');
     res.status(201).send(dbPollCreated); // Send the created poll in the response
   } catch (err) {
     if (err instanceof z.ZodError) {
