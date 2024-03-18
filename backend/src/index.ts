@@ -6,7 +6,7 @@ import path from 'path';
 import { Server as Io } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
-import { cachePolls } from './cache';
+import { allPollsCached, cachePolls } from './cache';
 import { routes } from './slugs';
 import { swaggerDocs } from './swagger/swagger-config';
 import { rootDir } from './utils/path';
@@ -36,8 +36,18 @@ routes.forEach((route) => {
   app.use(route.path, route.handler);
 });
 
-io.on('connection', (socket) => {
+const handleSocketConnection = io.on('connection', async (socket) => {
   console.log('A user connected: ' + socket.id);
+
+  setInterval(() => {
+    if (allPollsCached.length > 0) {
+      socket.emit('allPolls', allPollsCached);
+      console.log(
+        'Polls sent to client - sample:',
+        allPollsCached[allPollsCached.length - 1]
+      );
+    }
+  }, 10000);
 
   socket.on('disconnect', () => {
     console.log('A user disconnected: ' + socket.id);
@@ -57,5 +67,11 @@ io.on('connection', (socket) => {
 
 server.listen(port, async () => {
   console.log(`Server running on port ${port}`);
-  cachePolls();
+  try {
+    await cachePolls();
+    console.log('Caching completed');
+  } catch (error) {
+    console.error('Error during caching:', error);
+  }
+  handleSocketConnection;
 });

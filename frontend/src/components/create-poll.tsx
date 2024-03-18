@@ -21,6 +21,7 @@ export default function CreatePoll() {
   useEffect(() => {
     const onConnect = () => {
       setIsConnected(true);
+      console.log('Connected to socket.io');
     };
 
     function onDisconnect() {
@@ -35,6 +36,9 @@ export default function CreatePoll() {
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
+    socket.on('allPolls', (allPolls) => {
+      console.log('allPolls:', allPolls);
+    });
     socket.on('message', (message) => {
       const parsedMessage = JSON.parse(message);
       console.log('CLIENT - Message:', parsedMessage);
@@ -55,10 +59,6 @@ export default function CreatePoll() {
       localStorage.setItem('userId', newUserId);
     }
   }, []);
-
-  useEffect(() => {
-    console.log('messageEvents:', messageEvents);
-  }, [messageEvents]);
 
   const newPollSchema = z.object({
     question: z
@@ -104,7 +104,6 @@ export default function CreatePoll() {
     resolver: zodResolver(newPollSchema),
   });
   const onSubmit: SubmitHandler<NewPollFormInput> = async (data) => {
-    console.log('data:', data);
     let options = [...data.mandatoryOptions];
 
     if (data.nullableOptions) {
@@ -116,14 +115,10 @@ export default function CreatePoll() {
       });
     }
 
-    console.log('options:', options);
-
     const parsedPayload = {
       question: data.question,
       options: options,
     };
-
-    console.log('parsedPayload:', parsedPayload);
 
     const response = await fetch('http://localhost:3000/poll', {
       method: 'POST',
@@ -139,7 +134,6 @@ export default function CreatePoll() {
     }
 
     const responseData = await response.json();
-    console.log('Response data:', responseData);
   };
 
   return (
