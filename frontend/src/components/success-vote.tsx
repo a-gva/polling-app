@@ -86,12 +86,7 @@ export default function SuccessVote() {
         {allPolls &&
           allPolls.length > 0 &&
           allPolls.map((poll, index) => (
-            <VotingCard
-              key={index}
-              question={poll.question}
-              options={poll.options}
-              pollId={poll.id}
-            />
+            <VotingCard key={index} content={poll} />
           ))}
       </div>
 

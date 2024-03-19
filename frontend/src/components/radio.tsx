@@ -17,15 +17,18 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
 
-export function VotingCard({
-  pollId,
-  question,
-  options,
-}: {
-  pollId: string;
+interface VotingProps {
+  id: string;
   question: string;
   options: string[];
-}) {
+}
+interface VotingCardProps {
+  content: VotingProps;
+}
+
+export function VotingCard({ content }: VotingCardProps) {
+  //   console.log('content:', content);
+  const { id, question, options } = content;
   const FormSchema = z.object({
     option: z
       .string()
@@ -38,12 +41,12 @@ export function VotingCard({
         message: `Option must be between 0 and ${options.length - 1}`,
         path: ['option'],
       }),
-    pollId: z.string(),
+    id: z.string(),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
-      pollId,
+      id,
     },
     resolver: zodResolver(FormSchema),
   });
@@ -89,7 +92,7 @@ export function VotingCard({
                         <FormLabel className='font-normal'>{option}</FormLabel>
                       </FormItem>
                     ))}
-                    <input type='hidden' {...form.register('pollId')} />
+                    <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
                 <FormMessage />
