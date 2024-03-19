@@ -1,5 +1,7 @@
 'use client';
 
+import { mockPolls } from '@/components/mockPolls';
+import { VotingCard } from '@/components/radio';
 import { useSocket } from '@/socket/provider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useEffect, useState } from 'react';
@@ -25,7 +27,7 @@ export default function SuccessVote() {
 
   const [isConnected, setIsConnected] = useState(socket?.connected);
   const [messageEvents, setMessageEvents] = useState<string[]>([]);
-  const [allPolls, setAllPolls] = useState<PollsProps>([]);
+  const [allPolls, setAllPolls] = useState<PollsProps>(mockPolls);
 
   useEffect(() => {
     const onConnect = () => {
@@ -45,7 +47,7 @@ export default function SuccessVote() {
 
     function onAllPollsEvent(polls: PollsProps) {
       console.log('Received allPolls:', polls);
-      setAllPolls(polls);
+      // setAllPolls(polls);
     }
 
     if (socket) {
@@ -54,7 +56,7 @@ export default function SuccessVote() {
       socket.on('allPolls', (polls) => {
         try {
           const parsedAllPolls = pollsSchema.parse(polls);
-          setAllPolls(parsedAllPolls);
+          // setAllPolls(parsedAllPolls);
           console.log('CLIENT - polls:', parsedAllPolls);
           console.log('CLIENT - id:', socket.id);
         } catch (error) {
@@ -79,26 +81,25 @@ export default function SuccessVote() {
   }, [socket]);
 
   return (
-    <>
-      <div className='flex flex-col items-center'>
+    <div className='flex flex-col'>
+      <div className='grid grid-cols-3'>
         {allPolls &&
           allPolls.length > 0 &&
-          allPolls.map((poll) => (
-            <div key={poll.id}>
-              <h3>{poll.question}</h3>
-              <ul>
-                {poll.options.map((option, index) => (
-                  <li key={index}>{option}</li>
-                ))}
-              </ul>
-            </div>
+          allPolls.map((poll, index) => (
+            <VotingCard
+              key={index}
+              question={poll.question}
+              options={poll.options}
+              pollId={poll.id}
+            />
           ))}
+      </div>
+
+      <div className='flex flex-col items-center'>
         <CheckCircleIcon style={{ fontSize: '10rem', color: 'green' }} />
         <span>Your vote was succesfully computed!</span>
-      </div>
-      <div>
         Check realtime results in <a href=''>link</a>
       </div>
-    </>
+    </div>
   );
 }
