@@ -35,13 +35,16 @@ export async function createPoll(req: Request, res: Response) {
       const allPolls = [...allPollsCached, dbPollCreated];
       cache.set('allPolls', allPolls, Number(process.env.CACHE_TIMEOUT));
       console.log(cache.get('allPolls'));
+      const io = req.app.get('io');
+      io.emit('newPollCreated', 'SERVER: A new poll has been created!');
+      console.log('SERVER - AFTER IO: Poll created!');
     }
 
-    console.log('🟩 Poll created!');
+    console.log('🟩 SERVER: Poll created!');
     clearPollsCache();
-    console.log('Polls Cache cleared');
+    console.log('SERVER: Polls Cache cleared');
     cachePolls();
-    console.log('Polls Cached');
+    console.log('SERVER: Polls Cached');
     res.status(201).send(dbPollCreated); // Send the created poll in the response
   } catch (err) {
     if (err instanceof z.ZodError) {

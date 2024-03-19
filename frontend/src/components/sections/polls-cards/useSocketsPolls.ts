@@ -24,15 +24,18 @@ export default function useSocketsPolls() {
       setAllPolls(polls);
     }
 
+    function onNewPollCreated(message: string) {
+      console.log('CLIENT: New poll created:', message);
+    }
+
     if (socket) {
       socket.on('connect', onConnect);
       socket.on('disconnect', onDisconnect);
+      socket.on('newPollCreated', onNewPollCreated);
       socket.on('allPolls', (polls) => {
         try {
           const parsedAllPolls = pollsSchema.parse(polls);
           setAllPolls(parsedAllPolls);
-          console.log('CLIENT - polls:', parsedAllPolls);
-          console.log('CLIENT - id:', socket.id);
         } catch (error) {
           console.error('Error parsing allPolls:', error);
         }
@@ -44,6 +47,7 @@ export default function useSocketsPolls() {
         socket.off('connect', onConnect);
         socket.off('disconnect', onDisconnect);
         socket.off('allPolls', onAllPollsEvent);
+        socket.off('newPollCreated', onNewPollCreated);
       }
     };
   }, [socket]);

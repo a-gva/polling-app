@@ -1,4 +1,5 @@
 import express from 'express';
+import { deleteAllPolls } from '../controllers/polls/handlers/DELETE/deleteAllPolls';
 import { deletePoll } from '../controllers/polls/handlers/DELETE/deletePoll';
 import { getAllPolls } from '../controllers/polls/handlers/GET/getAllPolls';
 import { getPollById } from '../controllers/polls/handlers/GET/getPollById';
@@ -8,6 +9,7 @@ import { createPoll } from '../controllers/polls/handlers/POST/createPoll';
 export const router = express.Router();
 
 router.post('/', createPoll);
+router.delete('/all', deleteAllPolls);
 router.delete('/:id', deletePoll);
 router.get('/:id', getPollById);
 router.get('/', getAllPolls);

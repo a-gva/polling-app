@@ -40,6 +40,17 @@ export const pollsSwagger = {
       },
     },
   },
+  '/poll/all': {
+    delete: {
+      tags: ['/poll/all'],
+      summary: 'Delete all polls',
+      responses: {
+        200: {
+          description: 'The list of the polls',
+        },
+      },
+    },
+  },
   '/poll/{id}': {
     get: {
       tags: ['/poll/{id}'],

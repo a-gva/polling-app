@@ -22,6 +22,8 @@ const io = new Io(server, {
   },
 });
 
+app.set('io', io);
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,8 +31,6 @@ app.use(express.static(path.join(rootDir, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const messageSchema = z.string();
-const messageId = z.string();
-
 // BOOK INDEX
 routes.forEach((route) => {
   app.use(route.path, route.handler);
