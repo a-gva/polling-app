@@ -39,15 +39,28 @@ routes.forEach((route) => {
 const handleSocketConnection = io.on('connection', async (socket) => {
   console.log('A user connected: ' + socket.id);
 
-  setInterval(() => {
+  socket.on('readyForData', () => {
+    console.log('===> readyForData event received');
+    socket.emit('allPolls', allPollsCached);
+  });
+
+  // setInterval(() => {
+  try {
     if (allPollsCached.length > 0) {
-      socket.emit('allPolls', allPollsCached);
       console.log(
         'Polls sent to client - sample:',
         allPollsCached[allPollsCached.length - 1]
       );
     }
-  }, 10000);
+    console.log(
+      '🟩 Polls sent to client on connection:',
+      allPollsCached.length
+    );
+  } catch (error) {
+    console.error('Error during sending polls:', error);
+  }
+
+  // }, 10000);
 
   socket.on('disconnect', () => {
     console.log('A user disconnected: ' + socket.id);

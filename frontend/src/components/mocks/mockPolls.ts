@@ -1,6 +1,6 @@
-import { PollsProps } from '@/components/success-vote';
+import { SinglePollProps } from '@/types';
 
-export const mockPolls: PollsProps = [
+export const mockPolls: SinglePollProps[] = [
   {
     id: '3647c622-df32-45e6-8101-258f49ddd679',
     question: 'Best Car',

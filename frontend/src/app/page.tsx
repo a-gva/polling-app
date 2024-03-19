@@ -1,7 +1,7 @@
-import CreatePoll from '@/components/create-poll';
-import SuccessVote from '@/components/success-vote';
+import CreatePoll from '@/components/sections/create-poll';
+import PollsCards from '@/components/sections/polls-cards';
+import WelcomeScreen from '@/components/sections/welcome-screen';
 import { Toaster } from '@/components/ui/toaster';
-import WelcomeScreen from '@/components/welcome-screen';
 import SocketProvider from '@/socket/provider';
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         </div>
         <div>
           <SocketProvider>
-            <SuccessVote />
+            <PollsCards />
           </SocketProvider>
         </div>
         <Toaster />
