@@ -129,27 +129,26 @@ export default function CreatePoll() {
     });
 
     if (!response.ok) {
-      console.error('Alexy Error:', response.status, response.statusText);
+      console.error('Error:', response.status, response.statusText);
       return;
     }
-
-    const responseData = await response.json();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-2/3'>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-full'>
       <div className='flex flex-row w-full '>
         <div className='flex flex-col w-5/6 '>
-          <label>Question</label>
+          <label>New Poll Question</label>
           <textarea
             {...register('question', { required: true })}
             className='border border-slate-300 rounded'
+            placeholder='What is your favorite color?'
           />
         </div>
 
-        <div className='flex items-end justify-end  w-1/6'>
-          <Button>
-            <input type='submit' />
+        <div className='flex items-end justify-end w-1/6'>
+          <Button className='bg-green-700 hover:bg-green-800'>
+            <input className='cursor-pointer' type='submit' value='Create' />
           </Button>
         </div>
       </div>

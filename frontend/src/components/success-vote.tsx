@@ -1,9 +1,7 @@
 'use client';
 
-import { mockPolls } from '@/components/mockPolls';
 import { VotingCard } from '@/components/radio';
 import { useSocket } from '@/socket/provider';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
@@ -27,7 +25,7 @@ export default function SuccessVote() {
 
   const [isConnected, setIsConnected] = useState(socket?.connected);
   const [messageEvents, setMessageEvents] = useState<string[]>([]);
-  const [allPolls, setAllPolls] = useState<PollsProps>(mockPolls);
+  const [allPolls, setAllPolls] = useState<PollsProps>([]);
 
   useEffect(() => {
     const onConnect = () => {
@@ -47,7 +45,7 @@ export default function SuccessVote() {
 
     function onAllPollsEvent(polls: PollsProps) {
       console.log('Received allPolls:', polls);
-      // setAllPolls(polls);
+      setAllPolls(polls);
     }
 
     if (socket) {
@@ -56,7 +54,7 @@ export default function SuccessVote() {
       socket.on('allPolls', (polls) => {
         try {
           const parsedAllPolls = pollsSchema.parse(polls);
-          // setAllPolls(parsedAllPolls);
+          setAllPolls(parsedAllPolls);
           console.log('CLIENT - polls:', parsedAllPolls);
           console.log('CLIENT - id:', socket.id);
         } catch (error) {
@@ -82,18 +80,12 @@ export default function SuccessVote() {
 
   return (
     <div className='flex flex-col'>
-      <div className='grid grid-cols-3'>
+      <div className='grid grid-cols-3 gap-2'>
         {allPolls &&
           allPolls.length > 0 &&
           allPolls.map((poll, index) => (
             <VotingCard key={index} content={poll} />
           ))}
-      </div>
-
-      <div className='flex flex-col items-center'>
-        <CheckCircleIcon style={{ fontSize: '10rem', color: 'green' }} />
-        <span>Your vote was succesfully computed!</span>
-        Check realtime results in <a href=''>link</a>
       </div>
     </div>
   );

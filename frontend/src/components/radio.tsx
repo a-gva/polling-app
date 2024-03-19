@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -51,14 +52,33 @@ export function VotingCard({ content }: VotingCardProps) {
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+    const bodyPayload = {
+      vote: data.option,
+    };
+
+    console.log('bodyPayload:', bodyPayload);
+
+    const response = await fetch(`http://localhost:3000/vote/${data.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bodyPayload),
+    });
+
+    if (!response.ok) {
+      console.error('Alexy Error:', response.status, response.statusText);
+      return;
+    }
+
     toast({
-      title: 'You submitted the following values:',
+      title: 'Your vote was succesfully computed!',
       description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <div className='flex mt-2 w-[340px] rounded-md bg-green-50 p-4 items-center justify-center'>
+          <CheckCircleIcon style={{ fontSize: '5rem', color: 'green' }} />
+        </div>
       ),
     });
   }
