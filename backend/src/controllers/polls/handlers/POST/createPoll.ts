@@ -5,11 +5,15 @@ import cache, {
   allPollsCached,
   cachePolls,
   clearPollsCache,
+  currentCachedPolls,
 } from '../../../../cache';
 import prisma from '../../../../prisma';
-import { pollSchema } from '../../../schema';
+import { pollSchema } from '../../../../schema';
+import { socketClient } from '../../../../socket';
 
 export async function createPoll(req: Request, res: Response) {
+  const io = socketClient(req);
+
   try {
     const id = randomUUID();
     req.body.id = id;
@@ -35,17 +39,15 @@ export async function createPoll(req: Request, res: Response) {
       const allPolls = [...allPollsCached, dbPollCreated];
       cache.set('allPolls', allPolls, Number(process.env.CACHE_TIMEOUT));
       console.log(cache.get('allPolls'));
-      const io = req.app.get('io');
-      io.emit('newPollCreated', 'SERVER: A new poll has been created!');
-      console.log('SERVER - AFTER IO: Poll created!');
+      io.emit('newPollCreated', `${parsedDbPayload.id}`);
+      console.log('🟩 SERVER - AFTER IO: Poll created!');
     }
 
-    console.log('🟩 SERVER: Poll created!');
     clearPollsCache();
-    console.log('SERVER: Polls Cache cleared');
-    cachePolls();
-    console.log('SERVER: Polls Cached');
-    res.status(201).send(dbPollCreated); // Send the created poll in the response
+    await cachePolls();
+    io.emit('allPolls', currentCachedPolls());
+    console.log('🟩 SERVER - AFTER IO: Poll created!');
+    res.status(201).send(currentCachedPolls());
   } catch (err) {
     if (err instanceof z.ZodError) {
       const errorMessage = err.errors

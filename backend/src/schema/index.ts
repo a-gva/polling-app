@@ -1,9 +1,13 @@
 import { z } from 'zod';
 
+export const messageSchema = z.string();
+
 export const pollSchema = z.object({
   id: z.string(),
   question: z.string(),
   options: z.array(z.string()),
+  created_at: z.date().optional(),
+  options_length: z.number().optional(),
 });
 
 export const voteSchema = z.object({

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
-import { pollSchema, populateSchema } from '../../../schema';
+import { pollSchema, populateSchema } from '../../../../schema';
 
 export async function populatePollWithMockVotes(req: Request, res: Response) {
   let output = [];

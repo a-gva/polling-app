@@ -8,7 +8,8 @@ export default function useSocketsPolls() {
   console.log('Socket connected:', socket?.connected);
 
   const [isConnected, setIsConnected] = useState(socket?.connected);
-  const [allPolls, setAllPolls] = useState<SinglePollProps[]>([]);
+  const [allPolls, setAllPolls] = useState<SinglePollProps[] | null>([]);
+  const [lastCreatedPoll, setLastCreatedPoll] = useState('');
 
   useEffect(() => {
     const onConnect = () => {
@@ -24,14 +25,22 @@ export default function useSocketsPolls() {
       setAllPolls(polls);
     }
 
-    function onNewPollCreated(message: string) {
-      console.log('CLIENT: New poll created:', message);
+    function onNewPollCreated(newPollId: string) {
+      setLastCreatedPoll(newPollId);
+      console.log('CLIENT: New poll:', newPollId);
+    }
+
+    function onAllPollsDeleted(message: string) {
+      setLastCreatedPoll('');
+      setAllPolls(null);
+      console.log('CLIENT: New poll:', message);
     }
 
     if (socket) {
       socket.on('connect', onConnect);
       socket.on('disconnect', onDisconnect);
       socket.on('newPollCreated', onNewPollCreated);
+      socket.on('allPollsDeleted', onAllPollsDeleted);
       socket.on('allPolls', (polls) => {
         try {
           const parsedAllPolls = pollsSchema.parse(polls);
@@ -50,7 +59,19 @@ export default function useSocketsPolls() {
         socket.off('newPollCreated', onNewPollCreated);
       }
     };
-  }, [socket]);
+  }, [socket, lastCreatedPoll]);
+
+  useEffect(() => {
+    console.log('CLIENT: Last created poll:', lastCreatedPoll);
+    if (isConnected) {
+      try {
+        socket?.emit('readyForData');
+        console.log('===> readyForData emitted');
+      } catch (error) {
+        console.error('Error emitting readyForData:', error);
+      }
+    }
+  }, [lastCreatedPoll, isConnected, socket]);
 
   useEffect(() => {
     if (isConnected) {
@@ -61,6 +82,6 @@ export default function useSocketsPolls() {
         console.error('Error emitting readyForData:', error);
       }
     }
-  }, [isConnected, socket]);
+  }, []);
   return { isConnected, allPolls };
 }

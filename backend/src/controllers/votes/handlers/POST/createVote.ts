@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
-import { pollSchema, voteSchema } from '../../../schema';
+import { pollSchema, voteSchema } from '../../../../schema';
 
 export async function createVote(req: Request, res: Response) {
   try {

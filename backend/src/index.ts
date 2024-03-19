@@ -5,8 +5,8 @@ import { createServer } from 'http';
 import path from 'path';
 import { Server as Io } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
-import { z } from 'zod';
 import { allPollsCached, cachePolls } from './cache';
+import { messageSchema } from './schema';
 import { routes } from './slugs';
 import { swaggerDocs } from './swagger/swagger-config';
 import { rootDir } from './utils/path';
@@ -30,7 +30,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-const messageSchema = z.string();
 // BOOK INDEX
 routes.forEach((route) => {
   app.use(route.path, route.handler);

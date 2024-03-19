@@ -5,7 +5,7 @@ import useSocketsPolls from '@/components/sections/polls-cards/useSocketsPolls';
 
 export default function PollsCards() {
   const { allPolls, isConnected } = useSocketsPolls();
-  const showPolls = isConnected;
+  const showPolls = isConnected && allPolls && allPolls.length > 0;
 
   return (
     <div className='flex flex-col'>
