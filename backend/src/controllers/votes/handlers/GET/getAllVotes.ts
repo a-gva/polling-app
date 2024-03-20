@@ -11,10 +11,19 @@ export async function getAllVotes(req: Request, res: Response) {
       [poll.id]: {
         votes: [],
         options: poll.options,
-        currentCount: {},
+        currentCount: poll.options.reduce((acc, option, index) => {
+          acc[index] = {
+            totalVotes: 0,
+            percentage: 0,
+          };
+          return acc;
+        }, {}),
+        totalPollVotes: 0,
       },
     };
   });
+
+  console.log('polls', polls);
 
   const dbResponse = await Promise.all(
     Object.keys(polls).map(async (id) => {
@@ -33,34 +42,32 @@ export async function getAllVotes(req: Request, res: Response) {
     })
   );
 
-  Object.keys(polls).map((poll, index) => {
-    let pollVotesCount = {};
+  Object.keys(polls).map((poll) => {
     polls[poll].votes.map((vote) => {
-      if (pollVotesCount[vote] === undefined) {
-        pollVotesCount[vote] = { absolute: 1 };
-      } else {
-        pollVotesCount[vote].absolute += 1;
-      }
+      polls[poll].currentCount[vote].totalVotes += 1;
     });
-    polls[poll].currentCount = pollVotesCount;
-    // polls[poll].currentCount[index] = Object.keys(pollVotesCount).map(
-    //   (option) => {
-    //     return {
-    //       option,
-    //       percentage:
-    //         Math.round(
-    //           ((pollVotesCount[option] / polls[poll].votes.length) * 100 +
-    //             Number.EPSILON) *
-    //             100
-    //         ) / 100,
-    //     };
-    //   }
-    // );
   });
 
-  // output = output.map((option, index) => {
-  //   return { ...option, count: myMap.get(index) };
-  // });
+  Object.keys(polls).map((poll) => {
+    Object.keys(polls[poll].currentCount).map((option) => {
+      polls[poll].totalPollVotes += polls[poll].currentCount[option].totalVotes;
+    });
+  });
+
+  Object.keys(polls).map((poll, index) => {
+    polls[poll].votes.map((vote) => {
+      const resultPercentage =
+        Math.round(
+          ((polls[poll].currentCount[vote].totalVotes /
+            polls[poll].totalPollVotes) *
+            100 +
+            Number.EPSILON) *
+            100
+        ) / 100;
+
+      polls[poll].currentCount[vote].percentage = resultPercentage;
+    });
+  });
 
   res.status(200).send(polls);
 }
