@@ -28,7 +28,6 @@ interface VotingCardProps {
 }
 
 export function VotingCard({ content }: VotingCardProps) {
-  //   console.log('content:', content);
   const { id, question, options } = content;
   const FormSchema = z.object({
     option: z
@@ -53,12 +52,9 @@ export function VotingCard({ content }: VotingCardProps) {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
     const bodyPayload = {
       vote: data.option,
     };
-
-    console.log('bodyPayload:', bodyPayload);
 
     const response = await fetch(`http://localhost:3000/vote/${data.id}`, {
       method: 'POST',

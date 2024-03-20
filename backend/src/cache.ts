@@ -13,9 +13,9 @@ export let allPollsCached: Poll[] = [];
 export function clearPollsCache(): void {
   try {
     cache.del('allPolls');
-    console.log('SERVER: Cache cleared!');
+    console.log('💻 SERVER: Cache cleared! \n');
   } catch (error) {
-    console.error('Failed to clear cache:', error);
+    console.error('Failed to clear cache:', error, '\n');
   }
 }
 
@@ -26,9 +26,9 @@ export async function cachePolls(): Promise<void> {
     );
     allPollsCached = response.data;
     cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
-    console.log('SERVER: Polls Cached');
+    console.log('🟢 All Polls Cached on Server \n');
   } catch (error) {
-    console.error('Failed to fetch polls:', error);
+    console.error('🔴 Failed to fetch polls:', error);
   }
 }
 

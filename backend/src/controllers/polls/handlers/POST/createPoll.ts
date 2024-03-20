@@ -38,15 +38,13 @@ export async function createPoll(req: Request, res: Response) {
     if (dbPollCreated) {
       const allPolls = [...allPollsCached, dbPollCreated];
       cache.set('allPolls', allPolls, Number(process.env.CACHE_TIMEOUT));
-      console.log(cache.get('allPolls'));
       io.emit('newPollCreated', `${parsedDbPayload.id}`);
-      console.log('🟩 SERVER - AFTER IO: Poll created!');
     }
 
     clearPollsCache();
     await cachePolls();
     io.emit('allPolls', currentCachedPolls());
-    console.log('🟩 SERVER - AFTER IO: Poll created!');
+    console.log('🟢 IO - Updated/cached polls sent back to clients \n');
     res.status(201).send(currentCachedPolls());
   } catch (err) {
     if (err instanceof z.ZodError) {

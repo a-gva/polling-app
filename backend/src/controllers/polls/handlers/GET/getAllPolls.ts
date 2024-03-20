@@ -7,7 +7,7 @@ export async function getAllPolls(req: Request, res: Response) {
     let allPolls = cache.get('allPolls');
 
     if (!allPolls) {
-      console.log('Fetching all polls from DB...');
+      console.log('🏋️ Fetching all polls from DB... \n');
       allPolls = await new Promise((resolve) =>
         setTimeout(async () => {
           const polls = await prisma.poll.findMany({
@@ -20,7 +20,7 @@ export async function getAllPolls(req: Request, res: Response) {
         }, 1000)
       );
     }
-    allPolls && console.log('All polls fetched from DB');
+    allPolls && console.log('🟢 All polls fetched from DB \n');
     res.status(200).send(allPolls);
   } catch (err) {
     console.error(`🔴 ERROR: ${err.message}`);

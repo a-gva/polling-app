@@ -18,7 +18,6 @@ export default function useSocketsPolls() {
 
     function onDisconnect() {
       setIsConnected(false);
-      console.log('A user disconnected');
     }
 
     function onAllPollsEvent(polls: SinglePollProps[]) {
@@ -27,13 +26,11 @@ export default function useSocketsPolls() {
 
     function onNewPollCreated(newPollId: string) {
       setLastCreatedPoll(newPollId);
-      console.log('CLIENT: New poll:', newPollId);
     }
 
     function onAllPollsDeleted(message: string) {
       setLastCreatedPoll('');
       setAllPolls(null);
-      console.log('CLIENT: New poll:', message);
     }
 
     if (socket) {
@@ -62,7 +59,6 @@ export default function useSocketsPolls() {
   }, [socket, lastCreatedPoll]);
 
   useEffect(() => {
-    console.log('CLIENT: Last created poll:', lastCreatedPoll);
     if (isConnected) {
       try {
         socket?.emit('readyForData');

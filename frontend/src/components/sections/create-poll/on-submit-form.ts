@@ -33,5 +33,5 @@ export const onSubmitForm: SubmitHandler<NewPollFormInputSchemaProps> = async (
     return;
   }
 
-  console.log('Successful HTTP request: Poll created!');
+  console.log('🟢 Successful HTTP request: Poll created! \n');
 };

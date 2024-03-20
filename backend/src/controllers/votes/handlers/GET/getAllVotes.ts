@@ -15,8 +15,6 @@ export async function getAllVotes(req: Request, res: Response) {
     };
   });
 
-  console.log('votesRegistry', votesRegistry);
-
   allPollsCached.map((poll) => {
     polls = {
       ...polls,
@@ -33,8 +31,6 @@ export async function getAllVotes(req: Request, res: Response) {
       },
     };
   });
-
-  // console.log('polls', polls);
 
   const dbResponse = await Promise.all(
     Object.keys(votesRegistry).map(async (id) => {
