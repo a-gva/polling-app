@@ -3,15 +3,26 @@ import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
 
 export async function getAllVotes(req: Request, res: Response) {
+  let votesRegistry = {};
   let polls = {};
+
+  allPollsCached.map((poll) => {
+    votesRegistry = {
+      ...votesRegistry,
+      [poll.id]: {
+        votes: [],
+      },
+    };
+  });
+
+  console.log('votesRegistry', votesRegistry);
 
   allPollsCached.map((poll) => {
     polls = {
       ...polls,
       [poll.id]: {
-        votes: [],
         options: poll.options,
-        currentCount: poll.options.reduce((acc, option, index) => {
+        votes: poll.options.reduce((acc, option, index) => {
           acc[index] = {
             totalVotes: 0,
             percentage: 0,
@@ -23,10 +34,10 @@ export async function getAllVotes(req: Request, res: Response) {
     };
   });
 
-  console.log('polls', polls);
+  // console.log('polls', polls);
 
   const dbResponse = await Promise.all(
-    Object.keys(polls).map(async (id) => {
+    Object.keys(votesRegistry).map(async (id) => {
       const pollVotesResponse = await prisma.pollVotes.findMany({
         where: {
           pollId: id,
@@ -36,36 +47,38 @@ export async function getAllVotes(req: Request, res: Response) {
         },
       });
       pollVotesResponse.map((vote) => {
-        polls[id].votes.push(vote.vote);
+        votesRegistry[id].votes.push(vote.vote);
       });
       return pollVotesResponse;
     })
   );
 
-  Object.keys(polls).map((poll) => {
-    polls[poll].votes.map((vote) => {
-      polls[poll].currentCount[vote].totalVotes += 1;
+  // SET OPTION VOTES
+  Object.keys(votesRegistry).map((poll) => {
+    votesRegistry[poll].votes.map((vote) => {
+      polls[poll].votes[vote].totalVotes += 1;
     });
   });
 
+  // SET TOTAL VOTES
   Object.keys(polls).map((poll) => {
-    Object.keys(polls[poll].currentCount).map((option) => {
-      polls[poll].totalPollVotes += polls[poll].currentCount[option].totalVotes;
+    Object.keys(polls[poll].votes).map((option) => {
+      polls[poll].totalPollVotes += polls[poll].votes[option].totalVotes;
     });
   });
 
+  // SET PERCENTAGE
   Object.keys(polls).map((poll, index) => {
-    polls[poll].votes.map((vote) => {
+    votesRegistry[poll].votes.map((vote) => {
       const resultPercentage =
         Math.round(
-          ((polls[poll].currentCount[vote].totalVotes /
-            polls[poll].totalPollVotes) *
+          ((polls[poll].votes[vote].totalVotes / polls[poll].totalPollVotes) *
             100 +
             Number.EPSILON) *
             100
         ) / 100;
 
-      polls[poll].currentCount[vote].percentage = resultPercentage;
+      polls[poll].votes[vote].percentage = resultPercentage;
     });
   });
 
