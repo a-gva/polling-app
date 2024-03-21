@@ -22,12 +22,16 @@ export async function cachePolls(): Promise<void> {
       setTimeout(async () => {
         const response = await fetch('http://localhost:' + port + '/poll');
         const data = (await response.json()) as Poll[];
+
         allPollsCached = data;
-        cache.set(
-          'allPolls',
-          allPollsCached,
-          Number(process.env.CACHE_TIMEOUT)
-        );
+        const cacheTimeout = Number(process.env.CACHE_TIMEOUT);
+
+        if (isNaN(cacheTimeout)) {
+          console.error('CACHE_TIMEOUT is not a valid number');
+          return;
+        }
+
+        cache.set('allPolls', allPollsCached, cacheTimeout);
         console.log('🟢 All Polls Cached on Server \n');
         resolve();
       }, 1000);

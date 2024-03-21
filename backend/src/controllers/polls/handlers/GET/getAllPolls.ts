@@ -22,7 +22,6 @@ export async function getAllPolls(req: Request, res: Response) {
         }, 10)
       );
     }
-    console.log('🟢 Cached All polls sent back to client \n');
     res.status(200).send(allPolls);
   } catch (err) {
     console.error(`🔴 ERROR: ${err.message}`);

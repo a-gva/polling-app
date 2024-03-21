@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer';
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache/allPolls';
@@ -44,11 +43,7 @@ export async function createVote(
       res.status(200).send(dbVote);
       clearAllPollsVotesCache();
       await cacheAllPollsVotes();
-      const dataBuffer = Buffer.from(
-        JSON.stringify(allVoteResultsCached),
-        'utf8'
-      );
-      io.emit('allPollsVotes', dataBuffer);
+      io.emit('allPollsVotes', allVoteResultsCached);
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);
       res.status(400).send(`Vote "${parsedVote}" is out of range`);

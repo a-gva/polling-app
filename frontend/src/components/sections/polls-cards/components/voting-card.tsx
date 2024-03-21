@@ -5,7 +5,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import useSocketsPolls from '@/components/sections/polls-cards/useSocketsPolls';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -31,7 +30,7 @@ interface VotingCardProps {
 
 export function VotingCard({ content }: VotingCardProps) {
   const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
-  const { allPollsVotes, setAllPollsVotes } = useSocketsPolls();
+  // const { allPollsVotes, setAllPollsVotes } = useSocketsPolls();
 
   const { id, question, options } = content;
   const FormSchema = z.object({
@@ -106,7 +105,7 @@ export function VotingCard({ content }: VotingCardProps) {
                         key={index}
                         className='flex items-center space-x-3 space-y-0 rounded-sm  relative'
                       >
-                        <div
+                        {/* <div
                           style={{
                             background: '#00000030',
                             width: allPollsVotes
@@ -114,7 +113,7 @@ export function VotingCard({ content }: VotingCardProps) {
                               : '0%',
                           }}
                           className='absolute left-0 top-0 bottom-0 rounded-sm'
-                        />
+                        /> */}
                         <div className='relative z-10 flex space-x-3 h-8 items-center'>
                           <FormControl>
                             <RadioGroupItem value={index.toString()} />
@@ -124,19 +123,19 @@ export function VotingCard({ content }: VotingCardProps) {
                           </FormLabel>
                         </div>
 
-                        {allPollsVotes && (
+                        {/* {allPollsVotes && (
                           <p>
                             ({allPollsVotes[id]?.votes[index].totalVotes} votes)
                           </p>
-                        )}
+                        )} */}
                       </FormItem>
                     ))}
                     <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
-                {allPollsVotes && (
+                {/* {allPollsVotes && (
                   <p>Total votes: {allPollsVotes[id]?.totalPollVotes}</p>
-                )}
+                )} */}
                 <FormMessage />
               </FormItem>
             )}
