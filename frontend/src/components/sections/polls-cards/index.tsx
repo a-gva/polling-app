@@ -8,8 +8,11 @@ export default function PollsCards() {
   const showPolls = isConnected && allPolls && allPolls.length > 0;
 
   return (
-    <div className='flex flex-col'>
-      <div className='grid grid-cols-3 gap-2'>
+    <div className='flex flex-col gap-8 md:gap-16'>
+      {showPolls && (
+        <h1 className='text-2xl font-bold md:text-center'>Active Polls</h1>
+      )}
+      <div className='grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 '>
         {showPolls &&
           allPolls.map((poll, index) => (
             <VotingCard key={index} content={poll} />

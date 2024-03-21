@@ -10,10 +10,10 @@ export default function WelcomeScreen() {
       </div>
       <div className='flex flex-col gap-2'>
         <h2 className='font-bold'>How it works</h2>
-        <ul>
-          <li>Vote for any poll</li>
-          <li>See the results in real-time</li>
-        </ul>
+        <ol>
+          <li className='text-sm'>1. Vote for any poll</li>
+          <li>2. See the results in real-time</li>
+        </ol>
       </div>
     </div>
   );

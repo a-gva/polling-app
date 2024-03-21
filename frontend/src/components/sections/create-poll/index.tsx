@@ -21,16 +21,15 @@ export default function CreatePoll() {
       onSubmit={handleSubmit(onSubmitForm)}
       className='flex flex-col w-full'
     >
-      <div className='flex flex-row w-full '>
-        <div className='flex flex-col w-5/6 '>
-          <label>New Poll Question</label>
+      <div className='flex flex-row w-full gap-8'>
+        <div className='flex flex-col w-5/6 gap-4'>
+          <label className='font-bold text-lg'>New Poll Question</label>
           <textarea
             {...register('question', { required: true })}
-            className='border border-slate-300 rounded'
+            className='border border-slate-300 rounded p-2'
             placeholder='What is your favorite color?'
           />
         </div>
-
         <div className='flex items-end justify-end w-1/6'>
           <Button className='bg-green-700 hover:bg-green-800'>
             <input className='cursor-pointer' type='submit' value='Create' />
@@ -40,13 +39,13 @@ export default function CreatePoll() {
       {errors.question && (
         <ErrorMessage>{`${errors.question.message}`}</ErrorMessage>
       )}
-      <div className='flex flex-row w-full mt-4 gap-4'>
+      <div className='flex flex-col md:flex-row w-full mt-4 gap-2 md:gap-4'>
         <div className='flex flex-col w-full gap-2'>
           <div className='flex flex-col'>
             <label>Option 1</label>
             <input
               {...register(`mandatoryOptions.${0}`, { required: true })}
-              className='border border-slate-300 rounded h-8'
+              className='border border-slate-300 rounded h8 p-2'
             />
             {errors.mandatoryOptions && errors.mandatoryOptions[0] && (
               <ErrorMessage>{`${errors.mandatoryOptions[0].message}`}</ErrorMessage>
@@ -56,7 +55,7 @@ export default function CreatePoll() {
             <label>Option 2</label>
             <input
               {...register(`mandatoryOptions.${1}`, { required: true })}
-              className='border border-slate-300 rounded h-8'
+              className='border border-slate-300 rounded h8 p-2'
             />
             {errors.mandatoryOptions && errors.mandatoryOptions[1] && (
               <ErrorMessage>{`${errors.mandatoryOptions[1].message}`}</ErrorMessage>
@@ -68,8 +67,8 @@ export default function CreatePoll() {
             <label>Option 3 </label>
             <input
               {...register(`nullableOptions.${0}`)}
-              className='border border-slate-300 rounded h-8'
-              placeholder='Optional'
+              className='border border-slate-300 rounded h8 p-2'
+              // placeholder='Optional'
             />
             {errors.nullableOptions && errors.nullableOptions[0] && (
               <ErrorMessage>{`${errors.nullableOptions[0].message}`}</ErrorMessage>
@@ -79,8 +78,8 @@ export default function CreatePoll() {
             <label>Option 4</label>
             <input
               {...register(`nullableOptions.${1}`)}
-              className='border border-slate-300 rounded h-8'
-              placeholder='Optional'
+              className='border border-slate-300 rounded h8 p-2'
+              // placeholder='Optional'
             />
             {errors.nullableOptions && errors.nullableOptions[1] && (
               <ErrorMessage>{`${errors.nullableOptions[1].message}`}</ErrorMessage>

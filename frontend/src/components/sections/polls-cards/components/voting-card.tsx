@@ -80,7 +80,7 @@ export function VotingCard({ content }: VotingCardProps) {
   }
 
   return (
-    <Card className='p-6'>
+    <Card className='p-6 lg:p-6 w-full'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

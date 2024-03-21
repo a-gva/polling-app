@@ -6,17 +6,17 @@ import SocketProvider from '@/socket/provider';
 
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-row items-center justify-between xs:p-12 md:p-24'>
-      <div className='flex gap-12 z-10 max-w-5xl flex-col w-full items-center justify-between font-mono text-sm lg:flex'>
-        <div className='flex flex-row gap-12 w-full '>
-          <div className='w-1/3  '>
+    <main className='bg-gray-50 flex flex-col items-center justify-between xs:p-12 md:p-24'>
+      <div className='flex gap-12 md:gap-24 z-10 max-w-5xl flex-col w-full items-center justify-between font-mono text-sm lg:flex'>
+        <div className='flex flex-col lg:flex-row gap-12 w-full '>
+          <div className='md:w-1/3'>
             <WelcomeScreen />
           </div>
-          <div className='w-full '>
+          <div className='w-full self-end'>
             <CreatePoll />
           </div>
         </div>
-        <div>
+        <div className='flex flex-col lg:flex-row gap-12 w-full '>
           <SocketProvider>
             <PollsCards />
           </SocketProvider>
