@@ -70,7 +70,7 @@ export function VotingCard({ content }: VotingCardProps) {
     });
 
     if (!response.ok) {
-      console.error('Alexy Error:', response.status, response.statusText);
+      console.error('Error:', response.status, response.statusText);
       return;
     }
 
@@ -84,8 +84,6 @@ export function VotingCard({ content }: VotingCardProps) {
     });
 
     setHasSubmitedVote(true);
-
-    console.log('Alexy', allPollsVotes);
   }
 
   return (
