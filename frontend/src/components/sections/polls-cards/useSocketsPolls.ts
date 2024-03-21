@@ -44,6 +44,7 @@ export default function useSocketsPolls() {
           setAllPolls(parsedAllPolls);
         } catch (error) {
           console.error('Error parsing allPolls:', error);
+          return;
         }
       });
     }
@@ -78,6 +79,6 @@ export default function useSocketsPolls() {
         console.error('Error emitting readyForData:', error);
       }
     }
-  }, []);
+  }, [isConnected, socket]);
   return { isConnected, allPolls };
 }

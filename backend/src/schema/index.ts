@@ -18,3 +18,22 @@ export const voteSchema = z.object({
 export const populateSchema = z.object({
   quantity: z.number(),
 });
+
+const optionVotesSchema = z.object({
+  totalVotes: z.number(),
+  percentage: z.number(),
+});
+
+const pollWithVotesSchema = z.object({
+  options: z.array(z.string()),
+  votes: z.record(optionVotesSchema),
+  totalPollVotes: z.number(),
+});
+
+export const pollsWithResultsSchema = z.record(pollWithVotesSchema);
+
+const voteRegistryEntrySchema = z.object({
+  votes: z.array(z.any()),
+});
+
+export const votesRegistrySchema = z.record(voteRegistryEntrySchema);

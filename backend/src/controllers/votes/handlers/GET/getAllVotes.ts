@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 import { allPollsCached } from '../../../../cache';
 import prisma from '../../../../prisma';
+import { pollsWithResultsSchema } from '../../../../schema';
+import { PollsWithResults, VotesRegistry } from '../../../../types';
+import { setOptionVotes, setPercentage, setTotalVotes } from './utils';
 
 export async function getAllVotes(req: Request, res: Response) {
-  let votesRegistry = {};
-  let polls = {};
+  let votesRegistry: VotesRegistry = {};
+  let polls: PollsWithResults = {};
 
   allPollsCached.map((poll) => {
     votesRegistry = {
@@ -32,7 +35,7 @@ export async function getAllVotes(req: Request, res: Response) {
     };
   });
 
-  const dbResponse = await Promise.all(
+  await Promise.all(
     Object.keys(votesRegistry).map(async (id) => {
       const pollVotesResponse = await prisma.pollVotes.findMany({
         where: {
@@ -49,34 +52,15 @@ export async function getAllVotes(req: Request, res: Response) {
     })
   );
 
-  // SET OPTION VOTES
-  Object.keys(votesRegistry).map((poll) => {
-    votesRegistry[poll].votes.map((vote) => {
-      polls[poll].votes[vote].totalVotes += 1;
-    });
-  });
+  setOptionVotes(votesRegistry, polls);
+  setTotalVotes(polls);
+  setPercentage(votesRegistry, polls);
 
-  // SET TOTAL VOTES
-  Object.keys(polls).map((poll) => {
-    Object.keys(polls[poll].votes).map((option) => {
-      polls[poll].totalPollVotes += polls[poll].votes[option].totalVotes;
-    });
-  });
-
-  // SET PERCENTAGE
-  Object.keys(polls).map((poll, index) => {
-    votesRegistry[poll].votes.map((vote) => {
-      const resultPercentage =
-        Math.round(
-          ((polls[poll].votes[vote].totalVotes / polls[poll].totalPollVotes) *
-            100 +
-            Number.EPSILON) *
-            100
-        ) / 100;
-
-      polls[poll].votes[vote].percentage = resultPercentage;
-    });
-  });
-
-  res.status(200).send(polls);
+  try {
+    const parsedPolls = pollsWithResultsSchema.parse(polls);
+    res.status(200).send(parsedPolls);
+  } catch (error) {
+    console.error('Error parsing allPolls:', error);
+    return;
+  }
 }
