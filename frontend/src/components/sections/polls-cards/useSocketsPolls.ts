@@ -83,6 +83,10 @@ export default function useSocketsPolls() {
     };
   }, [socket, lastCreatedPoll]);
 
+  // useEffect(() => {
+  //   console.log('Updated allPollsVotes:', allPollsVotes);
+  // }, [allPollsVotes]);
+
   useEffect(() => {
     if (isConnected) {
       try {
@@ -105,5 +109,5 @@ export default function useSocketsPolls() {
     }
   }, [isConnected, socket]);
 
-  return { isConnected, allPolls, allPollsVotes };
+  return { isConnected, allPolls, allPollsVotes, setAllPollsVotes };
 }

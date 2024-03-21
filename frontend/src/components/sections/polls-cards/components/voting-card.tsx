@@ -31,7 +31,7 @@ interface VotingCardProps {
 
 export function VotingCard({ content }: VotingCardProps) {
   const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
-  const { allPollsVotes } = useSocketsPolls();
+  const { allPollsVotes, setAllPollsVotes } = useSocketsPolls();
 
   const { id, question, options } = content;
   const FormSchema = z.object({
@@ -84,16 +84,14 @@ export function VotingCard({ content }: VotingCardProps) {
     });
 
     setHasSubmitedVote(true);
+
     console.log('Alexy', allPollsVotes);
   }
 
   return (
     <Card className='p-6 lg:p-6 w-full'>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='w-2/3 space-y-6'
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
           <FormField
             control={form.control}
             name='option'
@@ -108,12 +106,26 @@ export function VotingCard({ content }: VotingCardProps) {
                     {options.map((option, index) => (
                       <FormItem
                         key={index}
-                        className='flex items-center space-x-3 space-y-0'
+                        className='flex items-center space-x-3 space-y-0 rounded-sm  relative'
                       >
-                        <FormControl>
-                          <RadioGroupItem value={index.toString()} />
-                        </FormControl>
-                        <FormLabel className='font-normal'>{option}</FormLabel>
+                        <div
+                          style={{
+                            background: '#00000030',
+                            width: allPollsVotes
+                              ? `${allPollsVotes[id]?.votes[index].percentage}%`
+                              : '0%',
+                          }}
+                          className='absolute left-0 top-0 bottom-0 rounded-sm'
+                        />
+                        <div className='relative z-10 flex space-x-3 h-8 items-center'>
+                          <FormControl>
+                            <RadioGroupItem value={index.toString()} />
+                          </FormControl>
+                          <FormLabel className='font-normal'>
+                            {option}
+                          </FormLabel>
+                        </div>
+
                         {allPollsVotes && (
                           <p>
                             ({allPollsVotes[id]?.votes[index].totalVotes} votes)
