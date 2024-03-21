@@ -1,10 +1,11 @@
+import { Poll } from '@prisma/client';
 import { Request, Response } from 'express';
-import cache from '../../../../cache';
+import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 
 export async function getAllPolls(req: Request, res: Response) {
   try {
-    let allPolls = cache.get('allPolls');
+    let allPolls: Poll[] = cache.get('allPolls');
 
     if (!allPolls) {
       console.log('🏋️ Fetching all polls from DB... \n');
@@ -16,11 +17,12 @@ export async function getAllPolls(req: Request, res: Response) {
             },
           });
           cache.set('allPolls', polls, process.env.CACHE_TIMEOUT);
+          console.log('🟢 All polls fetched from DB \n');
           resolve(polls);
-        }, 1000)
+        }, 10)
       );
     }
-    allPolls && console.log('🟢 All polls fetched from DB \n');
+    console.log('🟢 Cached All polls sent back to client \n');
     res.status(200).send(allPolls);
   } catch (err) {
     console.error(`🔴 ERROR: ${err.message}`);

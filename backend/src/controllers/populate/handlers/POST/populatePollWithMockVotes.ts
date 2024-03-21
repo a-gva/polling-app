@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { allPollsCached } from '../../../../cache';
+import { allPollsCached } from '../../../../cache/allPolls';
 import prisma from '../../../../prisma';
 import { pollSchema, populateSchema } from '../../../../schema';
 
@@ -40,7 +40,7 @@ export async function populatePollWithMockVotes(req: Request, res: Response) {
         vote: vote.vote,
       },
     });
-    console.log('🟩 Vote registered!');
+    console.log('🗳️ Vote registered! \n');
     console.log(`${vote.pollId} - ${vote.vote}`);
   });
 

@@ -3,7 +3,7 @@ import {
   cachePolls,
   clearPollsCache,
   currentCachedPolls,
-} from '../../../../cache';
+} from '../../../../cache/allPolls';
 import prisma from '../../../../prisma';
 import { socketClient } from '../../../../socket';
 import { getAllPolls } from '../GET/getAllPolls';

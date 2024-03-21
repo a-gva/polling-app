@@ -5,7 +5,11 @@ import { createServer } from 'http';
 import path from 'path';
 import { Server as Io } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
-import { allPollsCached, cachePolls } from './cache';
+import { allPollsCached, cachePolls } from './cache/allPolls';
+import {
+  allVoteResultsCached,
+  cacheAllPollsVotes,
+} from './cache/allPollsVotes';
 import { messageSchema } from './schema';
 import { routes } from './slugs';
 import { swaggerDocs } from './swagger/swagger-config';
@@ -42,6 +46,7 @@ const handleSocketConnection = io.on('connection', async (socket) => {
       `📊 A "readyForData" event received from user: ${socket.id} \n`
     );
     socket.emit('allPolls', allPollsCached);
+    socket.emit('allPollsVotes', allVoteResultsCached);
   });
 
   socket.on('disconnect', () => {
@@ -62,7 +67,7 @@ const handleSocketConnection = io.on('connection', async (socket) => {
 server.listen(port, async () => {
   console.log(`💻 Server running on port ${port} \n`);
   try {
-    await cachePolls();
+    await Promise.all([cachePolls(), cacheAllPollsVotes()]);
   } catch (error) {
     console.error('Error during caching:', error, '\n');
   }

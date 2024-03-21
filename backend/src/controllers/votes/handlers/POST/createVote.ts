@@ -1,10 +1,18 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
-import { allPollsCached } from '../../../../cache';
+import { allPollsCached } from '../../../../cache/allPolls';
+import {
+  cacheAllPollsVotes,
+  clearAllPollsVotesCache,
+} from '../../../../cache/allPollsVotes';
 import prisma from '../../../../prisma';
 import { pollSchema, voteSchema } from '../../../../schema';
 
-export async function createVote(req: Request, res: Response) {
+export async function createVote(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { id } = req.params;
     const { vote } = req.body;
@@ -27,8 +35,10 @@ export async function createVote(req: Request, res: Response) {
           vote: parsedVote,
         },
       });
-      console.log('🟩 Vote registered!');
+      console.log('🗳️ Vote registered! \n');
       res.status(200).send(dbVote);
+      clearAllPollsVotesCache();
+      cacheAllPollsVotes();
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);
       res.status(400).send(`Vote "${parsedVote}" is out of range`);

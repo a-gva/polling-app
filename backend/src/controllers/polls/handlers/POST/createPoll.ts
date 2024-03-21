@@ -1,12 +1,13 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import cache, {
+import {
   allPollsCached,
   cachePolls,
   clearPollsCache,
   currentCachedPolls,
-} from '../../../../cache';
+} from '../../../../cache/allPolls';
+import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 import { pollSchema } from '../../../../schema';
 import { socketClient } from '../../../../socket';

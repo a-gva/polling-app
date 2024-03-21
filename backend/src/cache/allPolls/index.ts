@@ -1,12 +1,9 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
-import NodeCache from 'node-cache';
-import { Poll } from './types';
+import { Poll } from '../../types';
+import { cache } from '../provider';
 
 dotenv.config();
 const port = process.env.PORT;
-
-const cache = new NodeCache();
 
 export let allPollsCached: Poll[] = [];
 
@@ -21,12 +18,13 @@ export function clearPollsCache(): void {
 
 export async function cachePolls(): Promise<void> {
   try {
-    const response = await axios.get<Poll[]>(
-      'http://localhost:' + port + '/poll'
-    );
-    allPollsCached = response.data;
-    cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
-    console.log('🟢 All Polls Cached on Server \n');
+    setTimeout(async () => {
+      const response = await fetch('http://localhost:' + port + '/poll');
+      const data = (await response.json()) as Poll[];
+      allPollsCached = data;
+      cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
+      console.log('🟢 All Polls Cached on Server \n');
+    }, 1000);
   } catch (error) {
     console.error('🔴 Failed to fetch polls:', error);
   }
@@ -35,5 +33,3 @@ export async function cachePolls(): Promise<void> {
 export function currentCachedPolls(): Poll[] | undefined {
   return cache.get('allPolls');
 }
-
-export default cache;

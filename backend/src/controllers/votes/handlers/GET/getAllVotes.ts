@@ -1,11 +1,20 @@
 import { Request, Response } from 'express';
-import { allPollsCached } from '../../../../cache';
+import { allPollsCached } from '../../../../cache/allPolls';
+import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 import { pollsWithResultsSchema } from '../../../../schema';
 import { PollsWithResults, VotesRegistry } from '../../../../types';
 import { setOptionVotes, setPercentage, setTotalVotes } from './utils';
 
 export async function getAllVotes(req: Request, res: Response) {
+  const cachedAllPollsVotes: PollsWithResults = cache.get('allPollsVotes');
+
+  if (cachedAllPollsVotes && Object.keys(cachedAllPollsVotes).length > 0) {
+    console.log('🟢 Cached All Polls Votes sent back to client \n');
+    res.status(200).send(cachedAllPollsVotes);
+    return;
+  }
+
   let votesRegistry: VotesRegistry = {};
   let polls: PollsWithResults = {};
 
@@ -37,18 +46,23 @@ export async function getAllVotes(req: Request, res: Response) {
 
   await Promise.all(
     Object.keys(votesRegistry).map(async (id) => {
-      const pollVotesResponse = await prisma.pollVotes.findMany({
-        where: {
-          pollId: id,
-        },
-        select: {
-          vote: true,
-        },
-      });
-      pollVotesResponse.map((vote) => {
-        votesRegistry[id].votes.push(vote.vote);
-      });
-      return pollVotesResponse;
+      try {
+        const pollVotesResponse = await prisma.pollVotes.findMany({
+          where: {
+            pollId: id,
+          },
+          select: {
+            vote: true,
+          },
+        });
+        pollVotesResponse.map((vote) => {
+          votesRegistry[id].votes.push(vote.vote);
+        });
+        return pollVotesResponse;
+      } catch (error) {
+        console.error('Error fetching all poll votes:', error);
+        return;
+      }
     })
   );
 
@@ -58,6 +72,7 @@ export async function getAllVotes(req: Request, res: Response) {
 
   try {
     const parsedPolls = pollsWithResultsSchema.parse(polls);
+    cache.set('allPollsVotes', parsedPolls, Number(process.env.CACHE_TIMEOUT));
     res.status(200).send(parsedPolls);
   } catch (error) {
     console.error('Error parsing allPolls:', error);
