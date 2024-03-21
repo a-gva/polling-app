@@ -18,8 +18,15 @@ export const newPollFormInputSchema = z.object({
   nullableOptions: z.array(z.string()).optional(),
 });
 
-const voteRegistryEntrySchema = z.object({
-  votes: z.array(z.any()),
+const optionVotesSchema = z.object({
+  totalVotes: z.number(),
+  percentage: z.number(),
 });
 
-export const votesRegistrySchema = z.record(voteRegistryEntrySchema);
+const pollWithVotesSchema = z.object({
+  options: z.array(z.string()),
+  votes: z.record(optionVotesSchema),
+  totalPollVotes: z.number(),
+});
+
+export const pollsWithResultsSchema = z.record(pollWithVotesSchema);

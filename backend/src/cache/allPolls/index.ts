@@ -17,17 +17,25 @@ export function clearPollsCache(): void {
 }
 
 export async function cachePolls(): Promise<void> {
-  try {
-    setTimeout(async () => {
-      const response = await fetch('http://localhost:' + port + '/poll');
-      const data = (await response.json()) as Poll[];
-      allPollsCached = data;
-      cache.set('allPolls', allPollsCached, Number(process.env.CACHE_TIMEOUT));
-      console.log('🟢 All Polls Cached on Server \n');
-    }, 1000);
-  } catch (error) {
-    console.error('🔴 Failed to fetch polls:', error);
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      setTimeout(async () => {
+        const response = await fetch('http://localhost:' + port + '/poll');
+        const data = (await response.json()) as Poll[];
+        allPollsCached = data;
+        cache.set(
+          'allPolls',
+          allPollsCached,
+          Number(process.env.CACHE_TIMEOUT)
+        );
+        console.log('🟢 All Polls Cached on Server \n');
+        resolve();
+      }, 1000);
+    } catch (error) {
+      console.error('🔴 Failed to fetch polls:', error);
+      reject(error);
+    }
+  });
 }
 
 export function currentCachedPolls(): Poll[] | undefined {

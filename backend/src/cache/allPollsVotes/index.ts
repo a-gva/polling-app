@@ -21,7 +21,6 @@ export async function cacheAllPollsVotes(): Promise<void> {
     setTimeout(async () => {
       const response = await fetch('http://localhost:' + port + '/vote');
       const data = (await response.json()) as VotesRegistry;
-      console.log('Arrivedddd ==== data', data);
       allVoteResultsCached = data;
       cache.set(
         'allPollsVotes',

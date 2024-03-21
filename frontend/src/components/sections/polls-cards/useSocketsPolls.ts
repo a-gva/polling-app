@@ -1,4 +1,4 @@
-import { pollsSchema, votesRegistrySchema } from '@/schema';
+import { pollsSchema, pollsWithResultsSchema } from '@/schema';
 import { useSocket } from '@/socket/provider';
 import { SinglePollProps, VotesRegistry } from '@/types';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,8 @@ export default function useSocketsPolls() {
       });
       socket.on('allPollsVotes', (pollsVotes) => {
         try {
-          const parsedAllPollsVotes = votesRegistrySchema.parse(pollsVotes);
+          const parsedAllPollsVotes = pollsWithResultsSchema.parse(pollsVotes);
+          console.log('pollsVotes:', pollsVotes);
           console.log('Parsed allPollsVotes:', parsedAllPollsVotes);
           setAllPollsVotes(parsedAllPollsVotes);
         } catch (error) {

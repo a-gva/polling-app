@@ -31,9 +31,3 @@ const pollWithVotesSchema = z.object({
 });
 
 export const pollsWithResultsSchema = z.record(pollWithVotesSchema);
-
-const voteRegistryEntrySchema = z.object({
-  votes: z.array(z.any()),
-});
-
-export const votesRegistrySchema = z.record(voteRegistryEntrySchema);

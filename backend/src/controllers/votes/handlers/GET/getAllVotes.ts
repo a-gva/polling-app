@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { allPollsCached } from '../../../../cache/allPolls';
+import { allPollsCached, cachePolls } from '../../../../cache/allPolls';
 import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 import { pollsWithResultsSchema } from '../../../../schema';
@@ -7,6 +7,14 @@ import { PollsWithResults, VotesRegistry } from '../../../../types';
 import { setOptionVotes, setPercentage, setTotalVotes } from './utils';
 
 export async function getAllVotes(req: Request, res: Response) {
+  try {
+    await cachePolls();
+  } catch (error) {
+    console.error('🔴 Failed to cache polls:', error);
+    res.status(500).send('Failed to cache polls');
+    return;
+  }
+
   const cachedAllPollsVotes: PollsWithResults = cache.get('allPollsVotes');
 
   if (cachedAllPollsVotes && Object.keys(cachedAllPollsVotes).length > 0) {
