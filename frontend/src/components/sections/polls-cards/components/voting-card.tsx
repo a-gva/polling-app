@@ -5,6 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import useSocketsPolls from '@/components/sections/polls-cards/useSocketsPolls';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
+import { useState } from 'react';
 
 interface VotingProps {
   id: string;
@@ -28,6 +30,9 @@ interface VotingCardProps {
 }
 
 export function VotingCard({ content }: VotingCardProps) {
+  const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
+  const { allPollsVotes } = useSocketsPolls();
+
   const { id, question, options } = content;
   const FormSchema = z.object({
     option: z
@@ -77,6 +82,9 @@ export function VotingCard({ content }: VotingCardProps) {
         </div>
       ),
     });
+
+    setHasSubmitedVote(true);
+    console.log('Alexy', allPollsVotes);
   }
 
   return (
@@ -106,11 +114,19 @@ export function VotingCard({ content }: VotingCardProps) {
                           <RadioGroupItem value={index.toString()} />
                         </FormControl>
                         <FormLabel className='font-normal'>{option}</FormLabel>
+                        {allPollsVotes && (
+                          <p>
+                            ({allPollsVotes[id]?.votes[index].totalVotes} votes)
+                          </p>
+                        )}
                       </FormItem>
                     ))}
                     <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
+                {allPollsVotes && (
+                  <p>Total votes: {allPollsVotes[id]?.totalPollVotes}</p>
+                )}
                 <FormMessage />
               </FormItem>
             )}

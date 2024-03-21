@@ -1,16 +1,22 @@
 import { pollsSchema, pollsWithResultsSchema } from '@/schema';
 import { useSocket } from '@/socket/provider';
-import { SinglePollProps, VotesRegistry } from '@/types';
+import { PollsProps, SinglePollProps, VotesRegistry } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function useSocketsPolls() {
   const socket = useSocket();
-  console.log('Socket connected:', socket?.connected);
 
   const [isConnected, setIsConnected] = useState(socket?.connected);
   const [allPolls, setAllPolls] = useState<SinglePollProps[] | null>([]);
   const [allPollsVotes, setAllPollsVotes] = useState<VotesRegistry | null>({});
   const [lastCreatedPoll, setLastCreatedPoll] = useState('');
+
+  useEffect(() => {
+    if (socket?.connected !== isConnected) {
+      console.log('Socket connected:', socket?.connected);
+      setIsConnected(socket?.connected);
+    }
+  }, [isConnected, socket?.connected]);
 
   useEffect(() => {
     const onConnect = () => {
@@ -43,8 +49,9 @@ export default function useSocketsPolls() {
       socket.on('disconnect', onDisconnect);
       socket.on('newPollCreated', onNewPollCreated);
       socket.on('allPollsDeleted', onAllPollsDeleted);
-      socket.on('allPolls', (polls) => {
+      socket.on('allPolls', (polls: PollsProps) => {
         try {
+          console.log('🔴 Parsed allPolls:', polls);
           const parsedAllPolls = pollsSchema.parse(polls);
           setAllPolls(parsedAllPolls);
         } catch (error) {
@@ -52,14 +59,14 @@ export default function useSocketsPolls() {
           return;
         }
       });
-      socket.on('allPollsVotes', (pollsVotes) => {
+      socket.on('allPollsVotes', (pollsVotes: VotesRegistry) => {
         try {
           const parsedAllPollsVotes = pollsWithResultsSchema.parse(pollsVotes);
-          console.log('pollsVotes:', pollsVotes);
-          console.log('Parsed allPollsVotes:', parsedAllPollsVotes);
+          console.log('🟢 Parsed allPollsVotes:', parsedAllPollsVotes);
           setAllPollsVotes(parsedAllPollsVotes);
         } catch (error) {
-          console.error('Error parsing allPollsVotes:', error);
+          console.log('pollsVotes:', pollsVotes);
+          console.log('Error parsing allPollsVotes:', error);
           return;
         }
       });
@@ -98,5 +105,5 @@ export default function useSocketsPolls() {
     }
   }, [isConnected, socket]);
 
-  return { isConnected, allPolls };
+  return { isConnected, allPolls, allPollsVotes };
 }

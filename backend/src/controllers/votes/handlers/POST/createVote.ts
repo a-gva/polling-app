@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache/allPolls';
 import {
+  allVoteResultsCached,
   cacheAllPollsVotes,
   clearAllPollsVotesCache,
-  currentAllPollsVotes,
 } from '../../../../cache/allPollsVotes';
 import prisma from '../../../../prisma';
 import { pollSchema, voteSchema } from '../../../../schema';
@@ -43,7 +43,7 @@ export async function createVote(
       res.status(200).send(dbVote);
       clearAllPollsVotesCache();
       await cacheAllPollsVotes();
-      io.emit('allPolls', currentAllPollsVotes());
+      io.emit('allPollsVotes', allVoteResultsCached);
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);
       res.status(400).send(`Vote "${parsedVote}" is out of range`);
