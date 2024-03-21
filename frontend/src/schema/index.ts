@@ -17,3 +17,9 @@ export const newPollFormInputSchema = z.object({
   mandatoryOptions: z.array(z.string()),
   nullableOptions: z.array(z.string()).optional(),
 });
+
+const voteRegistryEntrySchema = z.object({
+  votes: z.array(z.any()),
+});
+
+export const votesRegistrySchema = z.record(voteRegistryEntrySchema);

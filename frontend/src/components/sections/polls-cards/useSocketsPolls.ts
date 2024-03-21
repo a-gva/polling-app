@@ -1,6 +1,6 @@
-import { pollsSchema } from '@/schema';
+import { pollsSchema, votesRegistrySchema } from '@/schema';
 import { useSocket } from '@/socket/provider';
-import { SinglePollProps } from '@/types';
+import { SinglePollProps, VotesRegistry } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function useSocketsPolls() {
@@ -9,6 +9,7 @@ export default function useSocketsPolls() {
 
   const [isConnected, setIsConnected] = useState(socket?.connected);
   const [allPolls, setAllPolls] = useState<SinglePollProps[] | null>([]);
+  const [allPollsVotes, setAllPollsVotes] = useState<VotesRegistry | null>({});
   const [lastCreatedPoll, setLastCreatedPoll] = useState('');
 
   useEffect(() => {
@@ -21,6 +22,10 @@ export default function useSocketsPolls() {
     }
 
     function onAllPollsEvent(polls: SinglePollProps[]) {
+      setAllPolls(polls);
+    }
+
+    function onAllPollsVotesEvent(polls: SinglePollProps[]) {
       setAllPolls(polls);
     }
 
@@ -47,6 +52,16 @@ export default function useSocketsPolls() {
           return;
         }
       });
+      socket.on('allPollsVotes', (pollsVotes) => {
+        try {
+          const parsedAllPollsVotes = votesRegistrySchema.parse(pollsVotes);
+          console.log('Parsed allPollsVotes:', parsedAllPollsVotes);
+          setAllPollsVotes(parsedAllPollsVotes);
+        } catch (error) {
+          console.error('Error parsing allPollsVotes:', error);
+          return;
+        }
+      });
     }
 
     return () => {
@@ -54,6 +69,7 @@ export default function useSocketsPolls() {
         socket.off('connect', onConnect);
         socket.off('disconnect', onDisconnect);
         socket.off('allPolls', onAllPollsEvent);
+        socket.off('allPollsVotes', onAllPollsVotesEvent);
         socket.off('newPollCreated', onNewPollCreated);
       }
     };
@@ -80,5 +96,6 @@ export default function useSocketsPolls() {
       }
     }
   }, [isConnected, socket]);
+
   return { isConnected, allPolls };
 }
