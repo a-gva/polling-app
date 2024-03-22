@@ -114,3 +114,8 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 ## Running the tests
 
 Run `npm test` to execute the unit tests.
+
+## Lighthouse Metrics
+
+<img width="432" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/d278aec0-1b9e-49f2-a8cf-1aef6994b9a5">
+
