@@ -18,22 +18,15 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
+import { SinglePollProps } from '@/types';
 import { useState } from 'react';
 
-interface VotingProps {
-  id: string;
-  question: string;
-  options: string[];
-}
-interface VotingCardProps {
-  content: VotingProps;
-}
+type VotingCardProps = Pick<SinglePollProps, 'id' | 'question' | 'options'>;
 
-export function VotingCard({ content }: VotingCardProps) {
+export function VotingCard({ id, question, options }: VotingCardProps) {
   const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
   const { allPollsVotes, setAllPollsVotes } = useSocketsPolls();
 
-  const { id, question, options } = content;
   const FormSchema = z.object({
     option: z
       .string()

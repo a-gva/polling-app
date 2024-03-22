@@ -32,6 +32,7 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 - SOLID and DRY
 - Clean Architecture
 - Clean Code
+- Event Driven Architecture
 
 ## Getting Started
 

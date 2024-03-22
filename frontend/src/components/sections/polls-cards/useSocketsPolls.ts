@@ -1,3 +1,5 @@
+'use client';
+
 import { pollsSchema, pollsWithResultsSchema } from '@/schema';
 import { useSocket } from '@/socket/provider';
 import { PollsProps, SinglePollProps, VotesRegistry } from '@/types';
@@ -6,20 +8,23 @@ import { useCallback, useEffect, useState } from 'react';
 export default function useSocketsPolls() {
   const socket = useSocket();
 
-  const [isConnected, setIsConnected] = useState(socket?.connected);
+  const [isConnected, setIsConnected] = useState(false); // Initialize as false
   const [allPolls, setAllPolls] = useState<SinglePollProps[] | null>([]);
   const [allPollsVotes, setAllPollsVotes] = useState<VotesRegistry | null>({});
   const [lastCreatedPoll, setLastCreatedPoll] = useState('');
 
-  const onConnect = useCallback(() => setIsConnected(true), []);
-  const onDisconnect = useCallback(() => setIsConnected(false), []);
+  const onConnect = useCallback(() => {
+    setIsConnected(true); // Set isConnected to true when the socket is connected
+    socket.emit('readyForData'); // Emit readyForData when the socket is connected
+  }, [socket]);
+  const onDisconnect = useCallback(() => setIsConnected(false), []); // Set isConnected to false when the socket is disconnected
   const onNewPollCreated = useCallback(
-    (newPollId: string) => setLastCreatedPoll(newPollId),
+    (newPollCreated: PollsProps) =>
+      console.log('newPollCreated', newPollCreated),
     []
   );
   const onAllPollsDeleted = useCallback(() => {
     setLastCreatedPoll('');
-    setAllPolls(null);
   }, []);
 
   useEffect(() => {
@@ -30,7 +35,6 @@ export default function useSocketsPolls() {
       socket.on('allPollsDeleted', onAllPollsDeleted);
 
       socket.on('allPolls', (allPolls: PollsProps[]) => {
-        console.log('allPolls:', allPolls);
         const parsedAllPolls = pollsSchema.safeParse(allPolls);
         if (parsedAllPolls.success) {
           setAllPolls(parsedAllPolls.data);
@@ -40,7 +44,6 @@ export default function useSocketsPolls() {
       });
 
       socket.on('allPollsVotes', (allPollsVotes: VotesRegistry) => {
-        console.log('allPollsVotes:', allPollsVotes);
         const parsedAllPollsVotes =
           pollsWithResultsSchema.safeParse(allPollsVotes);
         if (parsedAllPollsVotes.success) {
@@ -53,10 +56,6 @@ export default function useSocketsPolls() {
         }
       });
 
-      if (isConnected) {
-        socket.emit('readyForData');
-      }
-
       return () => {
         socket.off('connect', onConnect);
         socket.off('disconnect', onDisconnect);
@@ -66,14 +65,17 @@ export default function useSocketsPolls() {
         socket.off('allPollsVotes');
       };
     }
-  }, [
-    socket,
-    isConnected,
-    onConnect,
-    onDisconnect,
-    onNewPollCreated,
-    onAllPollsDeleted,
-  ]);
+  }, [socket, onConnect, onDisconnect, onNewPollCreated, onAllPollsDeleted]);
+
+  useEffect(() => {
+    console.log('allPolls state:', allPolls);
+  }, [allPolls]);
+  useEffect(() => {
+    console.log('isConnected state:', isConnected);
+  }, [isConnected]);
+  useEffect(() => {
+    console.log('socket state:', socket);
+  }, [socket]);
 
   return { isConnected, allPolls, allPollsVotes, setAllPollsVotes };
 }

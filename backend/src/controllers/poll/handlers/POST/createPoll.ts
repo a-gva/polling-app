@@ -39,7 +39,7 @@ export async function createPoll(req: Request, res: Response) {
     if (dbPollCreated) {
       const allPolls = [...allPollsCached, dbPollCreated];
       cache.set('allPolls', allPolls, Number(process.env.CACHE_TIMEOUT));
-      io.emit('newPollCreated', `${parsedDbPayload.id}`);
+      io.emit('newPollCreated', dbPollCreated);
     }
 
     clearPollsCache();
