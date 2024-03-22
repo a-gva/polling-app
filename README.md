@@ -27,17 +27,16 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Node.js
+- Node.js > v17
 - npm
 
 ### Installing
 
-1. Clone the repository: `git clone https://github.com/a-gva/yourpolling-app.git`
+1. Clone the repository: `git clone https://github.com/a-gva/polling-app.git`
 2. Navigate into the project directory: `cd polling-app`
 3. Install the dependencies: `npm install`
-4. Start the server: `npm start`
-
-The server will start running at `http://localhost:3000`.
+4. At the `backend` folder, start the server with: `npm dev`. The server will start running at `http://localhost:3000`.
+5. At the `frontend` folder, start the server with: `npm dev`. The client will start running at `http://localhost:3001`.
 
 ## Backed Environment Variables
 
@@ -67,7 +66,7 @@ You can set these variables in a .env file in the backend directory. The Node.js
 
 Please replace the placeholders with the actual values for your environment.
 
-## Backed Environment Variables
+## Frontend Environment Variables
 
 The backend uses the following environment variables model:
 
