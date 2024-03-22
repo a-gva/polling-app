@@ -30,6 +30,7 @@ export default function useSocketsPolls() {
       socket.on('allPollsDeleted', onAllPollsDeleted);
 
       socket.on('allPolls', (allPolls: PollsProps[]) => {
+        console.log('allPolls:', allPolls);
         const parsedAllPolls = pollsSchema.safeParse(allPolls);
         if (parsedAllPolls.success) {
           setAllPolls(parsedAllPolls.data);

@@ -35,5 +35,5 @@ export async function cacheAllPollsVotes(): Promise<void> {
 }
 
 export function currentAllPollsVotes(): VotesRegistry | undefined {
-  return allVoteResultsCached;
+  return cache.get('allPollsVotes');
 }

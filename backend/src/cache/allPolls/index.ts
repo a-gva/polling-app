@@ -24,14 +24,8 @@ export async function cachePolls(): Promise<void> {
         const data = (await response.json()) as Poll[];
 
         allPollsCached = data;
-        const cacheTimeout = Number(process.env.CACHE_TIMEOUT);
 
-        if (isNaN(cacheTimeout)) {
-          console.error('CACHE_TIMEOUT is not a valid number');
-          return;
-        }
-
-        cache.set('allPolls', allPollsCached, cacheTimeout);
+        cache.set('allPolls', allPollsCached);
         console.log('🟢 All Polls Cached on Server \n');
         resolve();
       }, 1000);
