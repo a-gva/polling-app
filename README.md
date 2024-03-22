@@ -30,6 +30,29 @@ These instructions will get you a copy of the project up and running on your loc
 - Node.js > v17
 - npm
 
+## Docker and Database Setup
+
+This application uses Docker to run a PostgreSQL database. You need to have Docker installed on your machine to follow these instructions.
+
+### Database Setup
+
+1. Create a `.env` file in the root directory of the project and set the necessary environment variables. Here's an example:
+
+```properties
+DB_IMAGE=postgres
+DB_ACCESS_PORT=5432
+DB_INTERNAL_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+```
+
+2: Run the following command to start the Docker container: `docker-compose up -d`
+
+This command will start a PostgreSQL database in a Docker container.
+
+To stop the Docker container, you can run: `docker-compose down`
+Please replace the placeholders in the .env file with the actual values for your environment.
+
 ### Installing
 
 1. Clone the repository: `git clone https://github.com/a-gva/polling-app.git`
@@ -89,19 +112,3 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 ## Running the tests
 
 Run `npm test` to execute the unit tests.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
-
-Please replace the placeholders with the actual links and information about your project.
