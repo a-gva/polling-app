@@ -5,6 +5,7 @@ import {
   allVoteResultsCached,
   cacheAllPollsVotes,
   clearAllPollsVotesCache,
+  currentAllPollsVotes,
 } from '../../../../cache/allPollsVotes';
 import prisma from '../../../../prisma';
 import { pollSchema, voteSchema } from '../../../../schema';
@@ -39,10 +40,15 @@ export async function createVote(
           vote: parsedVote,
         },
       });
-      console.log('🗳️ Vote registered! \n');
       res.status(200).send(dbVote);
+      console.log('🗳️ Vote registered! \n');
       clearAllPollsVotesCache();
       await cacheAllPollsVotes();
+      const outputData = currentAllPollsVotes();
+      console.log(
+        '🚀 Sending allVoteResultsCached to client... \n',
+        outputData
+      );
       io.emit('allPollsVotes', allVoteResultsCached);
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);

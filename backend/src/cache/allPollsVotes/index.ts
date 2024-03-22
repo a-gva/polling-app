@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Poll, VotesRegistry } from '../../types';
+import { VotesRegistry } from '../../types';
 import { cache } from '../provider';
 
 dotenv.config();
@@ -34,6 +34,6 @@ export async function cacheAllPollsVotes(): Promise<void> {
   }
 }
 
-export function currentAllPollsVotes(): Poll[] | undefined {
-  return cache.get('allPollsVotes');
+export function currentAllPollsVotes(): VotesRegistry | undefined {
+  return allVoteResultsCached;
 }

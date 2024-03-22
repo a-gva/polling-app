@@ -39,6 +39,7 @@ export default function useSocketsPolls() {
       });
 
       socket.on('allPollsVotes', (allPollsVotes: VotesRegistry) => {
+        console.log('allPollsVotes:', allPollsVotes);
         const parsedAllPollsVotes =
           pollsWithResultsSchema.safeParse(allPollsVotes);
         if (parsedAllPollsVotes.success) {
