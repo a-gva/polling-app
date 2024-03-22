@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache/allPolls';
 import {
@@ -10,11 +10,7 @@ import prisma from '../../../../prisma';
 import { pollSchema, voteSchema } from '../../../../schema';
 import { socketClient } from '../../../../socket';
 
-export async function createVote(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function createVote(req: Request, res: Response) {
   const io = socketClient(req);
 
   try {
@@ -44,10 +40,6 @@ export async function createVote(
       clearAllPollsVotesCache();
       await cacheAllPollsVotes();
       const allPollsVotes = currentAllPollsVotes();
-      console.log(
-        '🚀 Sending allVoteResultsCached to client... \n',
-        allPollsVotes
-      );
       io.emit('allPollsVotes', allPollsVotes);
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);

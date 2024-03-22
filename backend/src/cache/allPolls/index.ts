@@ -10,7 +10,7 @@ export let allPollsCached: Poll[] = [];
 export function clearPollsCache(): void {
   try {
     cache.del('allPolls');
-    console.log('💻 SERVER: Cache cleared! \n');
+    console.log('💻 SERVER: allPolls Cache cleared! \n');
   } catch (error) {
     console.error('Failed to clear cache:', error, '\n');
   }

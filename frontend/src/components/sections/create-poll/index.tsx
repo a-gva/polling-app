@@ -42,8 +42,9 @@ export default function CreatePoll() {
       <div className='flex flex-col md:flex-row w-full mt-4 gap-2 md:gap-4'>
         <div className='flex flex-col w-full gap-2'>
           <div className='flex flex-col'>
-            <label>Option 1</label>
+            <label htmlFor='option1'>Option 1</label>
             <input
+              id='option1'
               {...register(`mandatoryOptions.${0}`, { required: true })}
               className='border border-slate-300 rounded h8 p-2'
             />
@@ -52,8 +53,9 @@ export default function CreatePoll() {
             )}
           </div>
           <div className='flex flex-col'>
-            <label>Option 2</label>
+            <label htmlFor='option2'>Option 2</label>
             <input
+              id='option2'
               {...register(`mandatoryOptions.${1}`, { required: true })}
               className='border border-slate-300 rounded h8 p-2'
             />
@@ -64,8 +66,9 @@ export default function CreatePoll() {
         </div>
         <div className='flex flex-col w-full gap-2'>
           <div className='flex flex-col'>
-            <label>Option 3 </label>
+            <label htmlFor='option3'>Option 3 </label>
             <input
+              id='option3'
               {...register(`nullableOptions.${0}`)}
               className='border border-slate-300 rounded h8 p-2'
               // placeholder='Optional'
@@ -75,8 +78,9 @@ export default function CreatePoll() {
             )}
           </div>
           <div className='flex flex-col'>
-            <label>Option 4</label>
+            <label htmlFor='option4'>Option 4</label>
             <input
+              id='option4'
               {...register(`nullableOptions.${1}`)}
               className='border border-slate-300 rounded h8 p-2'
               // placeholder='Optional'

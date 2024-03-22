@@ -8,7 +8,7 @@ export default function PollsCards() {
   const showPolls = isConnected && allPolls && allPolls.length > 0;
 
   return (
-    <div className='flex flex-col gap-8 md:gap-16'>
+    <div className='flex flex-col gap-8 md:gap-8 w-full'>
       {showPolls && (
         <h1 className='text-2xl font-bold md:text-center'>Active Polls</h1>
       )}
