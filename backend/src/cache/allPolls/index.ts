@@ -20,7 +20,7 @@ export async function cachePolls(): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
       setTimeout(async () => {
-        const response = await fetch('http://localhost:' + port + '/poll');
+        const response = await fetch('http://localhost:' + port + '/polls');
         const data = (await response.json()) as Poll[];
 
         allPollsCached = data;

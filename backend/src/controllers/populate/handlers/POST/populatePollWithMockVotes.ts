@@ -1,10 +1,18 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import { allPollsCached } from '../../../../cache/allPolls';
+import {
+  cacheAllPollsVotes,
+  clearAllPollsVotesCache,
+  currentAllPollsVotes,
+} from '../../../../cache/allPollsVotes';
 import prisma from '../../../../prisma';
 import { pollSchema, populateSchema } from '../../../../schema';
+import { socketClient } from '../../../../socket';
 
 export async function populatePollWithMockVotes(req: Request, res: Response) {
+  const io = socketClient(req);
+
   let output = [];
 
   const { id } = req.params;
@@ -42,6 +50,10 @@ export async function populatePollWithMockVotes(req: Request, res: Response) {
     });
     console.log('🗳️ Vote registered! \n');
     console.log(`${vote.pollId} - ${vote.vote}`);
+    clearAllPollsVotesCache();
+    await cacheAllPollsVotes();
+    const allPollsVotes = currentAllPollsVotes();
+    io.emit('allPollsVotes', allPollsVotes);
   });
 
   res
