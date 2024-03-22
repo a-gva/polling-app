@@ -12,6 +12,8 @@ This is a real-time polling application built with Node.js, Express, and Socket.
 - [Zod](https://github.com/colinhacks/zod)
 - [Prisma](https://www.prisma.io/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
 
 ## Features
 
@@ -20,6 +22,14 @@ This is a real-time polling application built with Node.js, Express, and Socket.
 - Swagger documentation
 - Uses Express for server routing
 - Caches poll data for performance
+- Data validations on interface layers with Zod
+
+## Design patterns applied
+
+- MVC
+- SOLID and DRY
+- Clean Architecture
+- Clean Code
 
 ## Getting Started
 
@@ -52,14 +62,6 @@ This command will start a PostgreSQL database in a Docker container.
 
 To stop the Docker container, you can run: `docker-compose down`
 Please replace the placeholders in the .env file with the actual values for your environment.
-
-### Installing
-
-1. Clone the repository: `git clone https://github.com/a-gva/polling-app.git`
-2. Navigate into the project directory: `cd polling-app`
-3. Install the dependencies: `npm install`
-4. At the `backend` folder, start the server with: `npm dev`. The server will start running at `http://localhost:3000`.
-5. At the `frontend` folder, start the server with: `npm dev`. The client will start running at `http://localhost:3001`.
 
 ## Backed Environment Variables
 
