@@ -1,5 +1,6 @@
 import {
   newPollFormInputSchema,
+  pollWithVotesSchema,
   pollsSchema,
   pollsWithResultsSchema,
   singlePollSchema,
@@ -11,4 +12,5 @@ export type PollsProps = z.infer<typeof pollsSchema>;
 export type NewPollFormInputSchemaProps = z.infer<
   typeof newPollFormInputSchema
 >;
+export type SinglePollVotes = z.infer<typeof pollWithVotesSchema>;
 export type VotesRegistry = z.infer<typeof pollsWithResultsSchema>;

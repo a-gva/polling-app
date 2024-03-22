@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function SocketComponents() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [allPolls, setAllPolls] = useState<PollsProps[]>([]);
+  const [allPolls, setAllPolls] = useState<PollsProps>([]);
   const [allPollsVotes, setAllPollsVotes] = useState<VotesRegistry>({});
 
   useEffect(() => {
@@ -18,23 +18,12 @@ export default function SocketComponents() {
 
     function onAllPollsEvent(allPolls: PollsProps[]) {
       console.log('1️⃣', allPolls);
-      setAllPolls((previous: PollsProps[] | null) => {
-        if (previous === null) {
-          return allPolls;
-        } else {
-          return [...previous, ...allPolls];
-        }
-      });
+      setAllPolls(allPolls);
+      console.log('📊 allPolls:', allPolls);
     }
     function onAllPollsVotesEvent(allPollsVotes: VotesRegistry) {
       console.log('2️⃣', allPollsVotes);
-      setAllPollsVotes((previous: VotesRegistry) => {
-        if (previous === null) {
-          return allPollsVotes;
-        } else {
-          return { ...previous, ...allPollsVotes };
-        }
-      });
+      setAllPollsVotes(allPollsVotes);
     }
 
     socket.on('connect', () => {
@@ -64,7 +53,7 @@ export default function SocketComponents() {
     <div className='App'>
       {/* <ConnectionState isConnected={isConnected} /> */}
       {/* <ConnectionManager /> */}
-      <PollsCards allPolls={allPolls} />
+      <PollsCards allPolls={allPolls} allPollsVotes={allPollsVotes} />
     </div>
   );
 }

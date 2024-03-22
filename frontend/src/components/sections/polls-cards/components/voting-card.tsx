@@ -17,13 +17,21 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
-import { SinglePollProps } from '@/types';
+import { SinglePollProps, SinglePollVotes } from '@/types';
 import { useState } from 'react';
 
-type VotingCardProps = Pick<SinglePollProps, 'id' | 'question' | 'options'>;
+type VotingCardProps = {
+  poll: SinglePollProps;
+  votes: SinglePollVotes;
+};
 
-export function VotingCard({ id, question, options }: VotingCardProps) {
+export function VotingCard({ poll, votes }: VotingCardProps) {
+  console.log('📊 poll:', poll);
+  console.log('📊 votes:', votes);
   const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
+
+  const { id, question, options } = poll;
+  // const { totalPollVotes, votes: pollVotes } = votes;
 
   const FormSchema = z.object({
     option: z
@@ -129,9 +137,9 @@ export function VotingCard({ id, question, options }: VotingCardProps) {
                     <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
-                {/* {allPollsVotes && allPollsVotes[id]?.totalPollVotes > 0 && (
+                {/* {totalPollVotes > 0 && (
                   <p className='tracking-tighter text-slate-600'>
-                    Total votes: {allPollsVotes[id]?.totalPollVotes}
+                    Total votes: {totalPollVotes}
                   </p>
                 )} */}
                 <FormMessage />

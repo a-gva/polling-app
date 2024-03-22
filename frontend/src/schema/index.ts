@@ -23,7 +23,7 @@ const optionVotesSchema = z.object({
   percentage: z.number(),
 });
 
-const pollWithVotesSchema = z.object({
+export const pollWithVotesSchema = z.object({
   options: z.array(z.string()),
   votes: z.record(optionVotesSchema),
   totalPollVotes: z.number(),
