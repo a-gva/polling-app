@@ -43,12 +43,12 @@ export async function createVote(
       console.log('🗳️ Vote registered! \n');
       clearAllPollsVotesCache();
       await cacheAllPollsVotes();
-      const outputData = currentAllPollsVotes();
+      const allPollsVotes = currentAllPollsVotes();
       console.log(
         '🚀 Sending allVoteResultsCached to client... \n',
-        outputData
+        allPollsVotes
       );
-      io.emit('allPollsVotes', currentAllPollsVotes());
+      io.emit('allPollsVotes', allPollsVotes);
     } else {
       console.error(`Vote "${parsedVote}" is out of range`);
       res.status(400).send(`Vote "${parsedVote}" is out of range`);

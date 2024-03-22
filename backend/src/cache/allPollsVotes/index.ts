@@ -18,19 +18,30 @@ export function clearAllPollsVotesCache(): void {
 
 export async function cacheAllPollsVotes(): Promise<void> {
   try {
-    setTimeout(async () => {
-      const response = await fetch('http://localhost:' + port + '/vote');
-      const data = (await response.json()) as VotesRegistry;
-      allVoteResultsCached = data;
-      cache.set(
-        'allPollsVotes',
-        allVoteResultsCached,
-        Number(process.env.CACHE_TIMEOUT)
-      );
-      console.log('🟢 All Polls Votes Cached on Server \n');
-    }, 1000);
+    await new Promise<void>((resolve) => {
+      setTimeout(async () => {
+        try {
+          const response = await fetch('http://localhost:' + port + '/vote');
+          const data = (await response.json()) as VotesRegistry;
+          allVoteResultsCached = data;
+          cache.set(
+            'allPollsVotes',
+            allVoteResultsCached,
+            Number(process.env.CACHE_TIMEOUT)
+          );
+          console.log('🟢 All Polls Votes Cached on Server \n');
+          resolve();
+        } catch (error) {
+          console.error('🔴 Failed to fetch and cache All Polls Votes:', error);
+          resolve();
+        }
+      }, 50);
+    });
   } catch (error) {
-    console.error('🔴 Failed to fetch All Polls Votes:', error);
+    console.error(
+      '🔴 Failed to set timeout for fetching and caching All Polls Votes:',
+      error
+    );
   }
 }
 
