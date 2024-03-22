@@ -2,7 +2,7 @@
 
 This is a real-time polling application built with Next.js, Node.js, Express, and Socket.IO.
 
-<img width="1008" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/76d9c6cb-69e4-4899-bc42-7524e77a063f">
+<img width="600" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/76d9c6cb-69e4-4899-bc42-7524e77a063f">
 
 ## Built With
 
@@ -113,7 +113,7 @@ Please replace the placeholders with the actual values for your environment.
 
 The API documentation is available at `http://localhost:3000/api-docs`.
 
-<img width="1496" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/85e6ef78-e027-4339-a20f-404c66e6c892">
+<img width="600" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/85e6ef78-e027-4339-a20f-404c66e6c892">
 
 ## Running the tests
 
@@ -121,5 +121,5 @@ Run `npm test` to execute the unit tests.
 
 ## Lighthouse Metrics
 
-<img width="432" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/d278aec0-1b9e-49f2-a8cf-1aef6994b9a5">
+<img width="400" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/d278aec0-1b9e-49f2-a8cf-1aef6994b9a5">
 
