@@ -1,5 +1,5 @@
 import CreatePoll from '@/components/sections/create-poll';
-import DisplayCards from '@/components/sections/display-cards';
+import SocketComponents from '@/components/sections/socket-components';
 import WelcomeScreen from '@/components/sections/welcome-screen';
 import { Toaster } from '@/components/ui/toaster';
 import SocketProvider from '@/socket/provider';
@@ -18,7 +18,7 @@ export default function Home() {
         </div>
         <div className='flex flex-col lg:flex-row gap-12 w-full '>
           <SocketProvider>
-            <DisplayCards />
+            <SocketComponents />
           </SocketProvider>
         </div>
         <Toaster />
