@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 import { pollSchema } from '../../../../schema';
+
+dotenv.config();
 
 export async function getPollById(req: Request, res: Response) {
   try {
@@ -23,7 +26,7 @@ export async function getPollById(req: Request, res: Response) {
             },
           });
           resolve(pollFromDB);
-        }, 1000)
+        }, Number(process.env.DB_ROUNDTRIP_TIMEOUT))
       );
 
       if (poll) {

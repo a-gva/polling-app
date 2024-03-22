@@ -28,7 +28,7 @@ export async function cachePolls(): Promise<void> {
         cache.set('allPolls', allPollsCached);
         console.log('🟢 All Polls Cached on Server \n');
         resolve();
-      }, 1000);
+      }, Number(process.env.DB_ROUNDTRIP_TIMEOUT));
     } catch (error) {
       console.error('🔴 Failed to fetch polls:', error);
       reject(error);

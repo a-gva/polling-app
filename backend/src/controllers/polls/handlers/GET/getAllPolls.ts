@@ -1,7 +1,10 @@
 import { Poll } from '@prisma/client';
+import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
+
+dotenv.config();
 
 export async function getAllPolls(req: Request, res: Response) {
   try {
@@ -19,7 +22,7 @@ export async function getAllPolls(req: Request, res: Response) {
           cache.set('allPolls', polls, process.env.CACHE_TIMEOUT);
           console.log('🟢 All polls fetched from DB \n');
           resolve(polls);
-        }, 10)
+        }, Number(process.env.DB_ROUNDTRIP_TIMEOUT))
       );
     }
     res.status(200).send(allPolls);
