@@ -111,6 +111,8 @@ Please replace the placeholders with the actual values for your environment.
 
 The API documentation is available at `http://localhost:3000/api-docs`.
 
+<img width="1496" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/85e6ef78-e027-4339-a20f-404c66e6c892">
+
 ## Running the tests
 
 Run `npm test` to execute the unit tests.
