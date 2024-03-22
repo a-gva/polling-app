@@ -2,6 +2,8 @@
 
 This is a real-time polling application built with Node.js, Express, and Socket.IO.
 
+<img width="1008" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/76d9c6cb-69e4-4899-bc42-7524e77a063f">
+
 ## Built With
 
 - [Node.js](https://nodejs.org/)
