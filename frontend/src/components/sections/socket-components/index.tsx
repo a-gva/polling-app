@@ -51,9 +51,5 @@ export default function SocketComponents() {
     }
   }, [isConnected]);
 
-  return (
-    <div className='App'>
-      <PollsCards allPolls={allPolls} allPollsVotes={allPollsVotes} />
-    </div>
-  );
+  return <PollsCards allPolls={allPolls} allPollsVotes={allPollsVotes} />;
 }

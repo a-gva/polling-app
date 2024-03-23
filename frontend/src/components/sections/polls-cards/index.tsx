@@ -12,12 +12,12 @@ export default function PollsCards({
   allPolls,
   allPollsVotes,
 }: PollsCardsProps) {
-  if (!allPolls) {
+  if (!allPolls || allPolls.length === 0) {
     return;
   }
 
   return (
-    <div className='flex flex-col gap-8 md:gap-8 w-full'>
+    <div className='flex flex-col gap-8 md:gap-8 w-full '>
       <h1 className='text-2xl font-bold md:text-center'>Active Polls</h1>
       <div className='grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 '>
         {allPolls.map((poll: SinglePollProps, index) => (
