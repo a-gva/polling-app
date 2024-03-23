@@ -4,7 +4,6 @@ export const singlePollSchema = z.object({
   id: z.string(),
   question: z.string(),
   options: z.array(z.string()),
-  votes: z.array(z.unknown()),
   created_at: z.string(),
   updated_at: z.string(),
   options_length: z.number(),

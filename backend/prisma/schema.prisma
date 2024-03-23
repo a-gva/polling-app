@@ -13,18 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id          String   @id @default(uuid())
-  name        String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-}
-
 model Poll {
   id          String @id
   question    String
   options     Json
-  votes       Int[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   pollVotes   PollVotes[] 
