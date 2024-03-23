@@ -1,4 +1,4 @@
-import { Poll } from '@prisma/client';
+import { Polls } from '@prisma/client';
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import { cache } from '../../../../cache/provider';
@@ -8,13 +8,13 @@ dotenv.config();
 
 export async function getAllPolls(req: Request, res: Response) {
   try {
-    let allPolls: Poll[] = cache.get('allPolls');
+    let allPolls: Polls[] = cache.get('allPolls');
 
     if (!allPolls) {
       console.log('🏋️ Fetching all polls from DB... \n');
       allPolls = await new Promise((resolve) =>
         setTimeout(async () => {
-          const polls = await prisma.poll.findMany({
+          const polls = await prisma.polls.findMany({
             orderBy: {
               id: 'asc',
             },

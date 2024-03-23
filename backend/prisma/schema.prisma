@@ -13,10 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Poll {
+model Polls {
   id          String @id
   question    String
-  options     Json
+  options     String[]
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   pollVotes   PollVotes[] 
@@ -26,7 +26,7 @@ model Poll {
 model PollVotes {
   id          String   @id @default(uuid())
   pollId      String
-  poll        Poll     @relation(fields: [pollId], references: [id]) // Relation field
+  poll        Polls     @relation(fields: [pollId], references: [id]) // Relation field
   vote        Int
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt

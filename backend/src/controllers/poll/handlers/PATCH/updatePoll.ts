@@ -14,7 +14,7 @@ export async function updatePoll(req: Request, res: Response) {
     const parsedOptions = options as z.infer<typeof pollSchema>['options'];
     const parsedOptionsLength = parsedOptions.length;
 
-    const updatedPoll = await prisma.poll.update({
+    const updatedPoll = await prisma.polls.update({
       where: {
         id: parsedId,
       },

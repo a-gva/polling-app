@@ -20,7 +20,7 @@ export async function getPollById(req: Request, res: Response) {
 
       poll = await new Promise((resolve) =>
         setTimeout(async () => {
-          const pollFromDB = await prisma.poll.findUnique({
+          const pollFromDB = await prisma.polls.findUnique({
             where: {
               id: parsedId,
             },

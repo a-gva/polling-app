@@ -22,7 +22,7 @@ export async function deletePoll(req: Request, res: Response) {
         pollId: parsedId,
       },
     });
-    await prisma.poll.delete({
+    await prisma.polls.delete({
       where: {
         id: parsedId,
       },

@@ -13,7 +13,7 @@ export async function deleteAllPolls(req: Request, res: Response) {
 
   try {
     await prisma.pollVotes.deleteMany();
-    await prisma.poll.deleteMany();
+    await prisma.polls.deleteMany();
     console.log(`🟩 Polls deleted!`);
     getAllPolls(req, res);
     io.emit('allPollsDeleted');

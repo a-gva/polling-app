@@ -26,7 +26,7 @@ export async function createPoll(req: Request, res: Response) {
       id: id as z.infer<typeof pollSchema>['id'],
     };
 
-    const dbPollCreated = await prisma.poll.create({
+    const dbPollCreated = await prisma.polls.create({
       data: {
         id: parsedDbPayload.id,
         question: parsedDbPayload.question,
