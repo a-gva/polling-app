@@ -22,16 +22,13 @@ import { useState } from 'react';
 
 type VotingCardProps = {
   poll: SinglePollProps;
-  votes: SinglePollVotes;
+  votes: SinglePollVotes | undefined | null;
 };
 
 export function VotingCard({ poll, votes }: VotingCardProps) {
-  console.log('📊 poll:', poll);
-  console.log('📊 votes:', votes);
   const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
 
   const { id, question, options } = poll;
-  // const { totalPollVotes, votes: pollVotes } = votes;
 
   const FormSchema = z.object({
     option: z
@@ -105,15 +102,15 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                         key={index}
                         className='flex items-center space-x-3 space-y-0 rounded-sm  relative'
                       >
-                        {/* <div
+                        <div
                           style={{
                             background: '#00000030',
-                            width: allPollsVotes
-                              ? `${allPollsVotes[id]?.votes[index].percentage}%`
+                            width: votes
+                              ? `${votes?.votes[index].percentage}%`
                               : '0%',
                           }}
                           className='absolute left-0 top-0 bottom-0 rounded-sm'
-                        /> */}
+                        />
                         <div className='relative z-10 flex space-x-3 h-8 items-center'>
                           <FormControl>
                             <RadioGroupItem
@@ -126,22 +123,21 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                           </FormLabel>
                         </div>
 
-                        {/* {allPollsVotes &&
-                          allPollsVotes[id]?.totalPollVotes > 0 && (
-                            <p className='text-slate-500'>
-                              {allPollsVotes[id]?.votes[index].percentage}%
-                            </p>
-                          )} */}
+                        {votes?.totalPollVotes > 0 && (
+                          <p className='text-slate-500'>
+                            {votes?.votes[index].percentage}%
+                          </p>
+                        )}
                       </FormItem>
                     ))}
                     <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
-                {/* {totalPollVotes > 0 && (
+                {votes?.totalPollVotes > 0 && (
                   <p className='tracking-tighter text-slate-600'>
-                    Total votes: {totalPollVotes}
+                    Total votes: {votes.totalPollVotes}
                   </p>
-                )} */}
+                )}
                 <FormMessage />
               </FormItem>
             )}
