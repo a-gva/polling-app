@@ -5,7 +5,7 @@ import { SinglePollProps, VotesRegistry } from '@/types';
 
 type PollsCardsProps = {
   allPolls: SinglePollProps[] | null;
-  allPollsVotes: VotesRegistry;
+  allPollsVotes: VotesRegistry | null | undefined;
 };
 
 export default function PollsCards({
@@ -15,13 +15,6 @@ export default function PollsCards({
   if (!allPolls) {
     return;
   }
-
-  console.log('2. allPolls:', allPolls);
-
-  console.log(
-    '2. allPollsVotes:',
-    allPollsVotes['18ee7364-2774-4528-bdc0-9f1a953843da']
-  );
 
   return (
     <div className='flex flex-col gap-8 md:gap-8 w-full'>

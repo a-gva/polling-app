@@ -123,7 +123,7 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                           </FormLabel>
                         </div>
 
-                        {votes?.totalPollVotes > 0 && (
+                        {votes && votes.totalPollVotes > 0 && (
                           <p className='text-slate-500'>
                             {votes?.votes[index].percentage}%
                           </p>
@@ -133,7 +133,7 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                     <input type='hidden' {...form.register('id')} />
                   </RadioGroup>
                 </FormControl>
-                {votes?.totalPollVotes > 0 && (
+                {votes && votes.totalPollVotes > 0 && (
                   <p className='tracking-tighter text-slate-600'>
                     Total votes: {votes.totalPollVotes}
                   </p>

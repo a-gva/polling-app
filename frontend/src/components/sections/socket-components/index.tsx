@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react';
 export default function SocketComponents() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [allPolls, setAllPolls] = useState<PollsProps | null>([]);
-  const [allPollsVotes, setAllPollsVotes] = useState<VotesRegistry | null>({});
+  const [allPollsVotes, setAllPollsVotes] = useState<
+    VotesRegistry | null | undefined
+  >({});
 
   useEffect(() => {
     function onDisconnect() {
@@ -51,9 +53,7 @@ export default function SocketComponents() {
 
   return (
     <div className='App'>
-      {allPolls && allPollsVotes && (
-        <PollsCards allPolls={allPolls} allPollsVotes={allPollsVotes} />
-      )}
+      <PollsCards allPolls={allPolls} allPollsVotes={allPollsVotes} />
     </div>
   );
 }
