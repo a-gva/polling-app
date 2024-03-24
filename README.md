@@ -80,7 +80,7 @@ This command will start a PostgreSQL database in a Docker container.
 To stop the Docker container, you can run: `docker-compose down`
 Please replace the placeholders in the .env file with the actual values for your environment.
 
-## Backed Environment Variables
+## Backend Environment Variables
 
 The backend uses the following environment variables model:
 
