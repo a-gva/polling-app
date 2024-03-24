@@ -27,6 +27,7 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 - Caches poll data for performance
 - Data validations on interface layers with Zod
 - Unit tests with Jest
+- Integration tests with Jest / SuperTest
 - E2E tests with Cypress
 
 ## Design patterns applied
@@ -129,6 +130,7 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 ## Running the tests
 
 - Unit tests: Run `yarn test` from either `/backend` or `/frontend`.
+- Integration tests: Run `yarn test` from `/backend` directory.
 - E2E tests: Run `yarn cypress:open` from `/frontend` directory.
 
 ## Google Lighthouse Metrics
