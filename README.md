@@ -26,6 +26,9 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 - Uses Express for server routing
 - Caches poll data for performance
 - Data validations on interface layers with Zod
+
+## Testing Features
+
 - Unit tests with Jest
 - Integration tests with Jest / SuperTest
 - E2E tests with Cypress
