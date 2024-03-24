@@ -6,14 +6,15 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 
 ## Built With
 
+- [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [Socket.IO](https://socket.io/)
-- [Swagger](https://swagger.io/)
-- [Jest](https://jestjs.io/)
 - [Zod](https://github.com/colinhacks/zod)
 - [Prisma](https://www.prisma.io/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [Swagger](https://swagger.io/)
+- [Jest](https://jestjs.io/)
+- [Cypress](https://www.cypress.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
 
@@ -127,8 +128,8 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 
 ## Running the tests
 
-Unit tests: Run `yarn test` from either `/backend` or `/frontend`.
-E2E tests: Run `yarn cypress:open` from `/frontend` directory.
+- Unit tests: Run `yarn test` from either `/backend` or `/frontend`.
+- E2E tests: Run `yarn cypress:open` from `/frontend` directory.
 
 ## Google Lighthouse Metrics
 
