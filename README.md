@@ -25,6 +25,8 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 - Uses Express for server routing
 - Caches poll data for performance
 - Data validations on interface layers with Zod
+- Unit tests with Jest
+- E2E tests with Cypress
 
 ## Design patterns applied
 
@@ -49,7 +51,6 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 - Node.js > v17
-- npm
 
 ## Docker and Database Setup
 
@@ -126,9 +127,9 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 
 ## Running the tests
 
-Run `npm test` to execute the unit tests.
+Unit tests: Run `yarn test` from either `/backend` or `/frontend`.
+E2E tests: Run `yarn cypress:open` from `/frontend` directory.
 
-## Lighthouse Metrics
+## Google Lighthouse Metrics
 
 <img width="400" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/d278aec0-1b9e-49f2-a8cf-1aef6994b9a5">
-
