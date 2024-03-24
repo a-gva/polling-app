@@ -38,6 +38,10 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 
 <img width="900" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/d8fc09dd-a691-4a18-b3f1-ed7a7d1e289d">
 
+## Client Workflow
+
+<img width="900" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/2b0ee8cf-2a98-475f-81f0-92b3bae69a75">
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
