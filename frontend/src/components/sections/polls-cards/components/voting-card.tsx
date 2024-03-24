@@ -26,9 +26,9 @@ type VotingCardProps = {
 };
 
 export function VotingCard({ poll, votes }: VotingCardProps) {
-  const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
-
   const { id, question, options } = poll;
+
+  const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
 
   const FormSchema = z.object({
     option: z
