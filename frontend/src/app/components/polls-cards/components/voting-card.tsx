@@ -78,7 +78,7 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
   }
 
   return (
-    <Card className='p-6 lg:p-6 w-full'>
+    <Card id={id} className='p-6 lg:p-6 w-full poll-card'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
           <FormField
