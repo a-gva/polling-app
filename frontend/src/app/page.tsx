@@ -1,6 +1,6 @@
-import CreatePoll from '@/components/sections/create-poll';
-import SocketComponents from '@/components/sections/socket-components';
-import WelcomeScreen from '@/components/sections/welcome-screen';
+import CreatePoll from '@/app/components/create-poll';
+import SocketComponents from '@/app/components/socket-components';
+import WelcomeScreen from '@/app/components/welcome-screen';
 import { Toaster } from '@/components/ui/toaster';
 import SocketProvider from '@/socket/provider';
 

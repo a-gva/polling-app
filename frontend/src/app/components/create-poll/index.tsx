@@ -1,7 +1,7 @@
 'use client';
 
-import { newPollSchemaValidation } from '@/components/sections/create-poll/form-validation';
-import { onSubmitForm } from '@/components/sections/create-poll/on-submit-form';
+import { newPollSchemaValidation } from '@/app/components/create-poll/form-validation';
+import { onSubmitForm } from '@/app/components/create-poll/on-submit-form';
 import { Button } from '@/components/ui/button';
 import { NewPollFormInputSchemaProps } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';

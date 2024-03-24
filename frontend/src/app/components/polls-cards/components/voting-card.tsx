@@ -18,7 +18,6 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
 import { SinglePollProps, SinglePollVotes } from '@/types';
-import { useState } from 'react';
 
 type VotingCardProps = {
   poll: SinglePollProps;
@@ -27,8 +26,6 @@ type VotingCardProps = {
 
 export function VotingCard({ poll, votes }: VotingCardProps) {
   const { id, question, options } = poll;
-
-  const [hasSubmitedVote, setHasSubmitedVote] = useState(false);
 
   const FormSchema = z.object({
     option: z
@@ -78,8 +75,6 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
         </div>
       ),
     });
-
-    setHasSubmitedVote(true);
   }
 
   return (
@@ -122,7 +117,6 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                             {option}
                           </FormLabel>
                         </div>
-
                         {votes && votes.totalPollVotes > 0 && (
                           <p className='text-slate-500'>
                             {votes?.votes[index].percentage}%

@@ -1,6 +1,6 @@
 'use client';
 
-import { VotingCard } from '@/components/sections/polls-cards/components/voting-card';
+import { VotingCard } from '@/app/components/polls-cards/components/voting-card';
 import { SinglePollProps, VotesRegistry } from '@/types';
 
 type PollsCardsProps = {
