@@ -1,4 +1,8 @@
-import { setOptionVotes, setPercentage, setTotalVotes } from './utils';
+import {
+  setOptionVotes,
+  setPercentage,
+  setTotalVotes,
+} from '../../controllers/votes/handlers/GET/getAllVotesUtils';
 
 describe('utils', () => {
   let votesRegistry = {};

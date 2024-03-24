@@ -4,7 +4,11 @@ import { cache } from '../../../../cache/provider';
 import prisma from '../../../../prisma';
 import { pollsWithResultsSchema } from '../../../../schema';
 import { PollsWithResults, VotesRegistry } from '../../../../types';
-import { setOptionVotes, setPercentage, setTotalVotes } from './utils';
+import {
+  setOptionVotes,
+  setPercentage,
+  setTotalVotes,
+} from './getAllVotesUtils';
 
 export async function getAllVotes(req: Request, res: Response) {
   try {

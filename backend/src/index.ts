@@ -15,7 +15,7 @@ import { rootDir } from './utils/path';
 dotenv.config();
 const port = process.env.PORT;
 
-const app = express();
+export const app = express();
 const server = createServer(app);
 const io = new Io(server, {
   cors: {
