@@ -32,7 +32,12 @@ export default function CreatePoll() {
         </div>
         <div className='flex items-end justify-end w-1/6'>
           <Button className='bg-green-700 hover:bg-green-800'>
-            <input className='cursor-pointer' type='submit' value='Create' />
+            <input
+              className='cursor-pointer'
+              type='submit'
+              value='Create'
+              data-cy={'form-submit'}
+            />
           </Button>
         </div>
       </div>
