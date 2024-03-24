@@ -118,7 +118,10 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                           </FormLabel>
                         </div>
                         {votes && votes.totalPollVotes > 0 && (
-                          <p className='text-slate-500'>
+                          <p
+                            className='text-slate-500'
+                            data-cy={`poll-option${index}-percentage`}
+                          >
                             {votes?.votes[index].percentage}%
                           </p>
                         )}
@@ -128,15 +131,24 @@ export function VotingCard({ poll, votes }: VotingCardProps) {
                   </RadioGroup>
                 </FormControl>
                 {votes && votes.totalPollVotes > 0 && (
-                  <p className='tracking-tighter text-slate-600'>
-                    Total votes: {votes.totalPollVotes}
-                  </p>
+                  <div className='flex flex-row gap-2'>
+                    <p className='tracking-tighter text-slate-600'>
+                      Total votes:
+                    </p>
+                    <span data-cy={`total-votes-poll-${id}`}>
+                      {votes.totalPollVotes}
+                    </span>
+                  </div>
                 )}
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className='bg-sky-700 hover:bg-sky-800' type='submit'>
+          <Button
+            className='bg-sky-700 hover:bg-sky-800'
+            type='submit'
+            data-cy={`vote-submit-poll-${id}`}
+          >
             Submit
           </Button>
         </form>

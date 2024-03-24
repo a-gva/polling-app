@@ -30,6 +30,8 @@ export default function useSocketData() {
     socket.on('connect', () => {
       console.log('🟢 Connected to the server');
       setIsConnected(true);
+      socket.emit('readyForData');
+      console.log('📡 readyForData emitted');
     });
     socket.on('disconnect', onDisconnect);
     socket.on('allPolls', onAllPollsEvent);
@@ -43,12 +45,12 @@ export default function useSocketData() {
     };
   }, []);
 
-  useEffect(() => {
-    if (isConnected === true) {
-      socket.emit('readyForData');
-      console.log('📡 readyForData emitted');
-    }
-  }, [isConnected]);
+  // useEffect(() => {
+  //   if (isConnected === true) {
+  //     socket.emit('readyForData');
+  //     console.log('📡 readyForData emitted');
+  //   }
+  // }, [isConnected]);
 
   return { allPolls, allPollsVotes };
 }
