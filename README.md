@@ -36,7 +36,7 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 
 ## API Architecture
 
-![image](https://github.com/a-gva/polling-app/assets/96698163/84e3dbfb-17bf-4b03-bdb2-11549a4f59b7)
+<img width="900" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/84e3dbfb-17bf-4b03-bdb2-11549a4f59b7">
 
 ## Getting Started
 
