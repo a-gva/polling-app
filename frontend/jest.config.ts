@@ -19,6 +19,12 @@ const config: Config = {
   collectCoverageFrom: ['src/app/**/*.ts', '!src/app/layout.tsx'],
   coverageReporters: ['html-spa'],
   coverageProvider: 'v8',
+  testPathIgnorePatterns: ['/node_modules/', '/cypress/'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
 };
 
 export default createJestConfig(config);
