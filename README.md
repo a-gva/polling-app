@@ -17,6 +17,7 @@ This is a real-time polling application built with Next.js, Node.js, Express, an
 - [Cypress](https://www.cypress.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/)
+- [Turborepo](https://turbo.build/)
 
 ## Features
 
@@ -131,6 +132,10 @@ The API documentation is available at `http://localhost:3000/api-docs`.
 <img width="600" alt="image" src="https://github.com/a-gva/polling-app/assets/96698163/85e6ef78-e027-4339-a20f-404c66e6c892">
 
 ## Running the tests
+
+- All tests (except E2E): Run `yarn test` from root.
+
+or...
 
 - Unit tests: Run `yarn test` from either `/backend` or `/frontend`.
 - Integration tests: Run `yarn test` from `/backend` directory.
