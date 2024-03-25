@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run typecheck && turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^1.13.0"
+  },
+  "workspaces": [
+    "backend/",
+    "frontend/"
+  ]
+}
