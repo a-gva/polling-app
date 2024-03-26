@@ -57,6 +57,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 - Node.js > v17
+- Docker
 
 ## Docker and Database Setup
 
@@ -64,7 +65,7 @@ This application uses Docker to run a PostgreSQL database. You need to have Dock
 
 ### Database Setup
 
-1. Create a `.env` file in the root directory of the project and set the necessary environment variables. Here's an example:
+1. Create a `.env` file in the `/db` directory of the project and set the necessary environment variables. Here's an example:
 
 ```properties
 DB_IMAGE=postgres
@@ -73,13 +74,6 @@ DB_INTERNAL_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
 ```
-
-2: Run the following command to start the Docker container: `docker-compose up -d`
-
-This command will start a PostgreSQL database in a Docker container.
-
-To stop the Docker container, you can run: `docker-compose down`
-Please replace the placeholders in the .env file with the actual values for your environment.
 
 ## Backend Environment Variables
 
@@ -99,7 +93,8 @@ ARGS='schema=public'
 DB_IMAGE=postgres
 DB_INTERNAL_PORT=5432
 
-DATABASE_URL="${CONNECTOR}://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DB_HOST}:${DB_ACCESS_PORT}/${DB_NAME}?${ARGS}"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
+# DATABASE_URL="${CONNECTOR}://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DB_HOST}:${DB_ACCESS_PORT}/${DB_NAME}?${ARGS}"
 
 CACHE_TIMEOUT=60
 DB_ROUNDTRIP_TIMEOUT=1
@@ -124,6 +119,20 @@ DB_PASSWORD=postgres
 You can set these variables in a .env file in the frontend directory. The Next.js server will load these variables at runtime.
 
 Please replace the placeholders with the actual values for your environment.
+
+## Running all services at once
+
+To run all services at once, you can use the following command from root:
+
+```bash
+yarn dev
+```
+
+It should:
+
+1. Start the database service
+2. Start the backend service, including the prisma service
+3. Start the frontend service
 
 ## API Documentation
 

@@ -1,6 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "db": {
+      "cache": false,
+      "persistent": true
+    },
+    "backend": {
+      "dependsOn": ["db"],
+      "cache": false,
+      "persistent": true
+    },
+    "frontend": {
+      "dependsOn": ["backend"],
+      "cache": false,
+      "persistent": true
+    },
     "typecheck": {},
     "build": {
       "dependsOn": ["^build"],

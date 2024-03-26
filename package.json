@@ -1,5 +1,8 @@
 {
+  "private": "true",
+  "license": "MIT",
   "scripts": {
+    "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run typecheck && turbo run test",
     "typecheck": "turbo run typecheck"
@@ -8,7 +11,8 @@
     "turbo": "^1.13.0"
   },
   "workspaces": [
-    "backend/",
-    "frontend/"
+    "db",
+    "backend",
+    "frontend"
   ]
 }

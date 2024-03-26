@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "dev": "npx prisma migrate dev --name init && nodemon src/index.ts",
     "test": "jest --verbose --coverage",
     "typecheck": "tsc --noEmit"
   },
