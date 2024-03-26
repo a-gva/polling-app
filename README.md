@@ -124,6 +124,14 @@ Please replace the placeholders with the actual values for your environment.
 
 To run all services at once, you can use the following command from root:
 
+1. Install all dependencies with:
+
+```bash
+yarn
+```
+
+2. Start all services with:
+
 ```bash
 yarn dev
 ```
