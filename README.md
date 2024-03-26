@@ -130,8 +130,8 @@ yarn dev
 
 It should:
 
-1. Start the database service
-2. Start the backend service, including the prisma service
+1. Start the database service in a Docker container;
+2. Start the backend service, including the prisma service;
 3. Start the frontend service
 
 ## API Documentation
