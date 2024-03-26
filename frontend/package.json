@@ -10,7 +10,7 @@
     "test": "jest --verbose --coverage",
     "typecheck": "tsc --noEmit",
     "cypress": "cypress open",
-    "cypress:all": "cypress run --browser chrome"
+    "e2e": "cypress run --browser chrome"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

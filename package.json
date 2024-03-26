@@ -2,10 +2,12 @@
   "private": "true",
   "license": "MIT",
   "scripts": {
-    "dev": "turbo run dev",
     "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
     "test": "turbo run typecheck && turbo run test",
-    "typecheck": "turbo run typecheck"
+    "dev": "turbo run dev",
+    "e2e": "turbo run e2e",
+    "start-and-test": "turbo run dev & turbo run test && turbo run e2e && kill $(lsof -t -i:3000 -i:3001)"
   },
   "devDependencies": {
     "turbo": "^1.13.0"
